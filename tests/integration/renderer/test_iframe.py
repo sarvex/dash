@@ -47,7 +47,7 @@ def test_rdif001_sandbox_allow_scripts(dash_duo):
 
     html_content = iframe.format(dash_duo.server_url)
 
-    dash_duo.driver.get("data:text/html;charset=utf-8," + html_content)
+    dash_duo.driver.get(f"data:text/html;charset=utf-8,{html_content}")
 
     dash_duo.driver.switch_to.frame(0)
 

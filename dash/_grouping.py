@@ -57,10 +57,10 @@ def grouping_len(grouping):
     :return: non-negative integer
     """
     if isinstance(grouping, (tuple, list)):
-        return sum([grouping_len(group_el) for group_el in grouping])
+        return sum(grouping_len(group_el) for group_el in grouping)
 
     if isinstance(grouping, dict):
-        return sum([grouping_len(group_el) for group_el in grouping.values()])
+        return sum(grouping_len(group_el) for group_el in grouping.values())
 
     return 1
 
@@ -79,10 +79,10 @@ def make_grouping_by_index(schema, flat_values):
 
     def _perform_make_grouping_like(value, next_values):
         if isinstance(value, (tuple, list)):
-            return list(
+            return [
                 _perform_make_grouping_like(el, next_values)
                 for i, el in enumerate(value)
-            )
+            ]
 
         if isinstance(value, dict):
             return {
@@ -220,8 +220,6 @@ def validate_grouping(grouping, schema, full_schema=None, path=()):
             validate_grouping(
                 grouping[k], schema[k], full_schema=full_schema, path=path + (k,)
             )
-    else:
-        pass
 
 
 def update_args_group(g, triggered):

@@ -19,19 +19,21 @@ def clear_storage(dash_duo):
 
 def table_columns(names, **extra_props):
     return [
-        dict(id="c{}".format(i), name=n, renamable=True, hideable=True, **extra_props)
+        dict(id=f"c{i}", name=n, renamable=True, hideable=True, **extra_props)
         for i, n in enumerate(names)
     ]
 
 
 def simple_table(names=("a", "b"), **props_override):
-    props = dict(
-        id="table",
-        columns=table_columns(names),
-        data=[{"c0": 0, "c1": 1}, {"c0": 2, "c1": 3}],
-        persistence=True,
+    props = (
+        dict(
+            id="table",
+            columns=table_columns(names),
+            data=[{"c0": 0, "c1": 1}, {"c0": 2, "c1": 3}],
+            persistence=True,
+        )
+        | props_override
     )
-    props.update(props_override)
     return dt.DataTable(**props)
 
 
@@ -66,27 +68,25 @@ NEW_NAME = "mango"
 
 def rename_and_hide(dash_duo, rename=0, new_name=NEW_NAME, hide=1):
     dash_duo.find_element(
-        ".dash-header.column-{} .column-header--edit".format(rename)
+        f".dash-header.column-{rename} .column-header--edit"
     ).click()
     prompt = dash_duo.driver.switch_to.alert
     prompt.send_keys(new_name)
     prompt.accept()
     dash_duo.find_element(
-        ".dash-header.column-{} .column-header--hide".format(hide)
+        f".dash-header.column-{hide} .column-header--hide"
     ).click()
 
 
 def check_table_names(dash_duo, names, table_id="table"):
     dash_duo.wait_for_text_to_equal(
-        "#{} .column-0 .column-header-name".format(table_id), names[0]
+        f"#{table_id} .column-0 .column-header-name", names[0]
     )
-    headers = dash_duo.find_elements("#{} .column-header-name".format(table_id))
+    headers = dash_duo.find_elements(f"#{table_id} .column-header-name")
     assert len(headers) == len(names)
 
     for i, n in enumerate(names):
-        name_el = dash_duo.find_element(
-            "#{} .column-{} .column-header-name".format(table_id, i)
-        )
+        name_el = dash_duo.find_element(f"#{table_id} .column-{i} .column-header-name")
         assert name_el.text == n
 
 
@@ -99,14 +99,14 @@ def test_rdps001_local_reload(dash_duo):
     rename_and_hide(dash_duo)
     # callback output
     dash_duo.wait_for_text_to_equal(
-        "#out", "names: [{}, b]; hidden: [c1]".format(NEW_NAME)
+        "#out", f"names: [{NEW_NAME}, b]; hidden: [c1]"
     )
     check_table_names(dash_duo, [NEW_NAME])
 
     dash_duo.wait_for_page()
     # callback gets persisted values, not the values provided with the layout
     dash_duo.wait_for_text_to_equal(
-        "#out", "names: [{}, b]; hidden: [c1]".format(NEW_NAME)
+        "#out", f"names: [{NEW_NAME}, b]; hidden: [c1]"
     )
     check_table_names(dash_duo, [NEW_NAME])
 
@@ -122,7 +122,7 @@ def test_rdps001_local_reload(dash_duo):
     app.persistence.value = 1
     dash_duo.wait_for_page()
     dash_duo.wait_for_text_to_equal(
-        "#out", "names: [{}, b]; hidden: [c1]".format(NEW_NAME)
+        "#out", f"names: [{NEW_NAME}, b]; hidden: [c1]"
     )
     check_table_names(dash_duo, [NEW_NAME])
 
@@ -152,7 +152,7 @@ def test_rdps002_session_reload(dash_duo):
     dash_duo.wait_for_page()
     # callback gets persisted values, not the values provided with the layout
     dash_duo.wait_for_text_to_equal(
-        "#out", "names: [{}, b]; hidden: [c1]".format(NEW_NAME)
+        "#out", f"names: [{NEW_NAME}, b]; hidden: [c1]"
     )
     check_table_names(dash_duo, [NEW_NAME])
 

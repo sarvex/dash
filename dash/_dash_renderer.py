@@ -53,8 +53,7 @@ def _set_react_version(v_react, v_reactdom=None):
     ]
 
 
-_env_react_version = os.getenv("REACT_VERSION")
-if _env_react_version:
+if _env_react_version := os.getenv("REACT_VERSION"):
     _set_react_version(_env_react_version)
     print(f"EXPERIMENTAL: Using react version from env: {_env_react_version}")
 else:

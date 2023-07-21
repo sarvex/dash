@@ -32,7 +32,7 @@ def app_with_errors():
 def get_error_html(dash_duo, index):
     # error is in an iframe so is annoying to read out - get it from the store
     return dash_duo.driver.execute_script(
-        "return store.getState().error.backEnd[{}].error.html;".format(index)
+        f"return store.getState().error.backEnd[{index}].error.html;"
     )
 
 

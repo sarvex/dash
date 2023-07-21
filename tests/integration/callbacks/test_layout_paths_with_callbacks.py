@@ -187,8 +187,8 @@ def test_cblp001_radio_buttons_callbacks_generating_children(dash_duo):
 
     def check_call_counts(chapters, count):
         for chapter in chapters:
-            assert call_counts[chapter + "-graph"].value == count
-            assert call_counts[chapter + "-label"].value == count
+            assert call_counts[f"{chapter}-graph"].value == count
+            assert call_counts[f"{chapter}-label"].value == count
 
     wait.until(lambda: call_counts["body"].value == 1, TIMEOUT)
     wait.until(lambda: call_counts["chapter1-graph"].value == 1, TIMEOUT)

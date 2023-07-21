@@ -157,7 +157,7 @@ def callback(
         if progress_default:
             long_spec["progressDefault"] = coerce_to_list(progress_default)
 
-            if not len(long_spec["progress"]) == len(long_spec["progressDefault"]):
+            if len(long_spec["progress"]) != len(long_spec["progressDefault"]):
                 raise Exception(
                     "Progress and progress default needs to be of same length"
                 )

@@ -99,7 +99,7 @@ def test_repr_with_wildcards(component_class):
     aria_first = "Table(id='1', aria-two='two', data-one='one')"
     repr_string = repr(c)
 
-    assert repr_string == data_first or repr_string == aria_first
+    assert repr_string in [data_first, aria_first]
 
 
 def test_docstring(component_class):
@@ -130,7 +130,7 @@ def test_attrs_match_forbidden_props(component_class):
     expected_attrs = set(reserved_words + ["children"]) - {"_.*"}
     c = component_class()
     base_attrs = set(dir(c))
-    extra_attrs = set(a for a in base_attrs if a[0] != "_")
+    extra_attrs = {a for a in base_attrs if a[0] != "_"}
 
     assert (
         extra_attrs == expected_attrs

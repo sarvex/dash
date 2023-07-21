@@ -207,20 +207,20 @@ def test_cbsc004_callback_using_unloaded_async_component(dash_duo):
     )
 
     @app.callback(
-        Output("output", "children"),
-        [Input("btn", "n_clicks")],
-        [State("table", "data")],
-    )
+            Output("output", "children"),
+            [Input("btn", "n_clicks")],
+            [State("table", "data")],
+        )
     def update_out(n_clicks, data):
-        return json.dumps(data) + " - " + str(n_clicks)
+        return f"{json.dumps(data)} - {str(n_clicks)}"
 
     @app.callback(
-        Output("output2", "children"),
-        [Input("btn", "n_clicks")],
-        [State("table", "derived_viewport_data")],
-    )
+            Output("output2", "children"),
+            [Input("btn", "n_clicks")],
+            [State("table", "derived_viewport_data")],
+        )
     def update_out2(n_clicks, data):
-        return json.dumps(data) + " - " + str(n_clicks)
+        return f"{json.dumps(data)} - {str(n_clicks)}"
 
     dash_duo.start_server(app)
 
@@ -267,9 +267,7 @@ def test_cbsc005_children_types(dash_duo, engine):
 
         @app.callback(Output("out", "children"), [Input("btn", "n_clicks")])
         def set_children(n):
-            if n is None or n > len(outputs):
-                return no_update
-            return outputs[n - 1][0]
+            return no_update if n is None or n > len(outputs) else outputs[n - 1][0]
 
         dash_duo.start_server(app)
         dash_duo.wait_for_text_to_equal("#out", "init")
@@ -341,10 +339,10 @@ def test_cbsc007_parallel_updates(refresh, dash_duo):
         return [{"a": (path or repr(path)) + ":a"}]
 
     @app.callback(
-        Output("out", "children"), [Input("loc", "pathname"), Input("t", "data")]
-    )
+            Output("out", "children"), [Input("loc", "pathname"), Input("t", "data")]
+        )
     def set_out(path, data):
-        return json.dumps(data) + " - " + (path or repr(path))
+        return f"{json.dumps(data)} - " + (path or repr(path))
 
     @app.callback(Output("loc", "pathname"), [Input("btn", "n_clicks")])
     def set_path(n):
@@ -683,15 +681,12 @@ def test_cbsc015_input_output_callback(dash_duo):
     )
 
     @app.callback(
-        Output("input", "value"),
-        Input("input", "value"),
-    )
+            Output("input", "value"),
+            Input("input", "value"),
+        )
     def circular_output(v):
         ctx = callback_context
-        if not ctx.triggered:
-            value = v
-        else:
-            value = v + 1
+        value = v if not ctx.triggered else v + 1
         return value
 
     call_count = Value("i", 0)

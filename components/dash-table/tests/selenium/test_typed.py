@@ -28,7 +28,7 @@ def test_type001_can_edit_number_cell_with_number_string(test):
     cell = target.cell(0, "ccc")
 
     cell.click()
-    test.send_keys("123" + Keys.ENTER)
+    test.send_keys(f"123{Keys.ENTER}")
 
     assert cell.get_text() == "123"
     assert test.get_log_errors() == []
@@ -42,7 +42,7 @@ def test_type002_cannot_edit_number_cell_with_non_number_string(test):
 
     initial_value = cell.get_text()
     cell.click()
-    test.send_keys("abc" + Keys.ENTER)
+    test.send_keys(f"abc{Keys.ENTER}")
 
     assert cell.get_text() == initial_value
     assert test.get_log_errors() == []
@@ -90,7 +90,7 @@ def test_type005_can_edit_date(test):
     cell = target.cell(0, "ccc")
 
     cell.click()
-    test.send_keys("17-8-21" + Keys.ENTER)
+    test.send_keys(f"17-8-21{Keys.ENTER}")
 
     assert cell.get_text() == "2017-08-21"
     assert test.get_log_errors() == []
@@ -104,7 +104,7 @@ def test_type006_cannot_edit_date_with_non_date(test):
 
     initial = cell.get_text()
     cell.click()
-    test.send_keys("abc" + Keys.ENTER)
+    test.send_keys(f"abc{Keys.ENTER}")
 
     assert cell.get_text() == initial
     assert test.get_log_errors() == []

@@ -32,9 +32,7 @@ def test_msmh002_window_override(dash_dcc):
     # so we need to trigger a rerender of the markdown component
     @app.callback(Output("md-container", "children"), [Input("md-trigger", "n_clicks")])
     def trigger_md_rerender(nclicks):
-        if nclicks is not None and nclicks > 0:
-            return dcc.Markdown(md_text)
-        return None
+        return dcc.Markdown(md_text) if nclicks is not None and nclicks > 0 else None
 
     dash_dcc.start_server(app)
 

@@ -10,13 +10,11 @@ def test_imports():
         for s in ["Map", "Object"]:
             elements.remove(s)
 
-    dir_set = set(
-        [
-            d
-            for d in dir(dash.html)
-            if d[0] != "_" and d[0] != "@" and d[0] == d[0].capitalize()
-        ]
-    )
+    dir_set = {
+        d
+        for d in dir(dash.html)
+        if d[0] != "_" and d[0] != "@" and d[0] == d[0].capitalize()
+    }
     assert dir_set == set(elements)
 
 

@@ -85,18 +85,24 @@ def test_stcp003_initial_falsy(dash_dcc):
                 [
                     storage_type,
                     dcc.Store(
-                        storage_type=storage_type, id="zero-" + storage_type, data=0
+                        storage_type=storage_type,
+                        id=f"zero-{storage_type}",
+                        data=0,
                     ),
                     dcc.Store(
                         storage_type=storage_type,
-                        id="false-" + storage_type,
+                        id=f"false-{storage_type}",
                         data=False,
                     ),
                     dcc.Store(
-                        storage_type=storage_type, id="null-" + storage_type, data=None
+                        storage_type=storage_type,
+                        id=f"null-{storage_type}",
+                        data=None,
                     ),
                     dcc.Store(
-                        storage_type=storage_type, id="empty-" + storage_type, data=""
+                        storage_type=storage_type,
+                        id=f"empty-{storage_type}",
+                        data="",
                     ),
                 ]
             )
@@ -110,10 +116,10 @@ def test_stcp003_initial_falsy(dash_dcc):
 
     for storage_type in ("local", "session"):
         getter = getattr(dash_dcc, f"get_{storage_type}_storage")
-        assert getter("zero-" + storage_type) == 0, storage_type
-        assert getter("false-" + storage_type) is False, storage_type
-        assert getter("null-" + storage_type) is None, storage_type
-        assert getter("empty-" + storage_type) == "", storage_type
+        assert getter(f"zero-{storage_type}") == 0, storage_type
+        assert getter(f"false-{storage_type}") is False, storage_type
+        assert getter(f"null-{storage_type}") is None, storage_type
+        assert getter(f"empty-{storage_type}") == "", storage_type
 
     assert dash_dcc.get_logs() == []
 

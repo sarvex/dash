@@ -259,7 +259,7 @@ def test_rdrh003_refresh_jwt(expiry_code, dash_duo):
                 ):
                     # Read the data to prevent bug with base http server.
                     flask.request.get_json(silent=True)
-                    flask.abort(expiry_code, description="JWT Expired " + str(token))
+                    flask.abort(expiry_code, description=f"JWT Expired {str(token)}")
             except HTTPException as e:
                 return e
             return func(*args, **kwargs)

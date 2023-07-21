@@ -266,22 +266,12 @@ class Format:
         return self
 
     def to_plotly_json(self):
-        f = {}
-        f["locale"] = self._locale.copy()
+        f = {"locale": self._locale.copy()}
         f["nully"] = self._nully
         f["prefix"] = self._prefix
         aligned = self._specifier["align"] != Align.default
-        f["specifier"] = "{}{}{}{}{}{}{}{}{}{}".format(
-            self._specifier["fill"] if aligned else "",
-            self._specifier["align"],
-            self._specifier["sign"],
-            self._specifier["symbol"],
-            self._specifier["padding"],
-            self._specifier["width"],
-            self._specifier["group"],
-            self._specifier["precision"],
-            self._specifier["trim"],
-            self._specifier["type"],
-        )
+        f[
+            "specifier"
+        ] = f'{self._specifier["fill"] if aligned else ""}{self._specifier["align"]}{self._specifier["sign"]}{self._specifier["symbol"]}{self._specifier["padding"]}{self._specifier["width"]}{self._specifier["group"]}{self._specifier["precision"]}{self._specifier["trim"]}{self._specifier["type"]}'
 
         return f

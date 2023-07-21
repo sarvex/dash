@@ -370,13 +370,13 @@ def test_no_proxy_success(mocker, caplog, empty_environ, setlevel_warning):
     ],
 )
 def test_proxy_success(mocker, caplog, empty_environ, proxy, host, port, path):
-    proxystr = "http://{}:{}::{}".format(host, port, proxy)
+    proxystr = f"http://{host}:{port}::{proxy}"
     app = Dash(url_base_pathname=path)
     mocker.patch.object(app.server, "run")
 
     app.run(proxy=proxystr, host=host, port=port)
 
-    assert "Dash is running on {}{}\n".format(proxy, path) in caplog.text
+    assert f"Dash is running on {proxy}{path}\n" in caplog.text
 
 
 def test_proxy_failure(mocker, empty_environ):

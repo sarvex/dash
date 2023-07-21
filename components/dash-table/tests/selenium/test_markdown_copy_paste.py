@@ -8,10 +8,10 @@ import pandas as pd
 
 url = "https://github.com/plotly/datasets/raw/master/" "26k-consumer-complaints.csv"
 rawDf = pd.read_csv(url)
-rawDf["Complaint ID"] = rawDf["Complaint ID"].map(lambda x: "**" + str(x) + "**")
-rawDf["Product"] = rawDf["Product"].map(lambda x: "[" + str(x) + "](plot.ly)")
-rawDf["Issue"] = rawDf["Issue"].map(lambda x: "![" + str(x) + "](assets/logo.png)")
-rawDf["State"] = rawDf["State"].map(lambda x: '```python\n"{}"\n```'.format(x))
+rawDf["Complaint ID"] = rawDf["Complaint ID"].map(lambda x: f"**{str(x)}**")
+rawDf["Product"] = rawDf["Product"].map(lambda x: f"[{str(x)}](plot.ly)")
+rawDf["Issue"] = rawDf["Issue"].map(lambda x: f"![{str(x)}](assets/logo.png)")
+rawDf["State"] = rawDf["State"].map(lambda x: f'```python\n"{x}"\n```')
 
 df = rawDf.to_dict("records")
 
@@ -21,9 +21,13 @@ def get_app():
 
     app.layout = DataTable(
         id="table",
-        data=df[0:250],
+        data=df[:250],
         columns=[
-            {"id": "Complaint ID", "name": "Complaint ID", "presentation": "markdown"},
+            {
+                "id": "Complaint ID",
+                "name": "Complaint ID",
+                "presentation": "markdown",
+            },
             {"id": "Product", "name": "Product", "presentation": "markdown"},
             {"id": "Sub-product", "name": "Sub-product"},
             {"id": "Issue", "name": "Issue", "presentation": "markdown"},

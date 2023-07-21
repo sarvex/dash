@@ -34,7 +34,6 @@ def test_cbpu001_aborted_callback(dash_duo):
         if callback1_count.value > 2:
             return no_update
         raise PreventUpdate("testing callback does not update")
-        return value
 
     @app.callback(Output("output2", "children"), [Input("output1", "children")])
     def callback2(value):
@@ -127,12 +126,12 @@ def test_cbpu003_no_update_chains(dash_duo):
         return b
 
     @app.callback(
-        Output("ab_out", "children"),
-        [Input("a_out_short", "children")],
-        [State("b_out", "children")],
-    )
+            Output("ab_out", "children"),
+            [Input("a_out_short", "children")],
+            [State("b_out", "children")],
+        )
     def ab_out(a, b):
-        return a + " " + b
+        return f"{a} {b}"
 
     dash_duo.start_server(app)
 

@@ -554,7 +554,7 @@ def test_clsd012_clientside_callback_context_states(dash_duo):
         ),
     )
 
-    dash_duo.find_element("#in0").send_keys("test 0" + Keys.RETURN)
+    dash_duo.find_element("#in0").send_keys(f"test 0{Keys.RETURN}")
 
     dash_duo.wait_for_text_to_equal(
         "#output-clientside",
@@ -566,7 +566,7 @@ def test_clsd012_clientside_callback_context_states(dash_duo):
         ),
     )
 
-    dash_duo.find_element("input[id*='in1\":0']").send_keys("test 1" + Keys.RETURN)
+    dash_duo.find_element("input[id*='in1\":0']").send_keys(f"test 1{Keys.RETURN}")
 
     dash_duo.wait_for_text_to_equal(
         "#output-clientside",
@@ -578,7 +578,7 @@ def test_clsd012_clientside_callback_context_states(dash_duo):
         ),
     )
 
-    dash_duo.find_element("input[id*='in1\":2']").send_keys("test 2" + Keys.RETURN)
+    dash_duo.find_element("input[id*='in1\":2']").send_keys(f"test 2{Keys.RETURN}")
 
     dash_duo.wait_for_text_to_equal(
         "#output-clientside",
@@ -623,7 +623,7 @@ def test_clsd013_clientside_callback_context_states_list(dash_duo):
         ),
     )
 
-    dash_duo.find_element("#in0").send_keys("test 0" + Keys.RETURN)
+    dash_duo.find_element("#in0").send_keys(f"test 0{Keys.RETURN}")
 
     dash_duo.wait_for_text_to_equal(
         "#output-clientside",
@@ -635,7 +635,7 @@ def test_clsd013_clientside_callback_context_states_list(dash_duo):
         ),
     )
 
-    dash_duo.find_element("input[id*='in1\":0']").send_keys("test 1" + Keys.RETURN)
+    dash_duo.find_element("input[id*='in1\":0']").send_keys(f"test 1{Keys.RETURN}")
 
     dash_duo.wait_for_text_to_equal(
         "#output-clientside",
@@ -647,7 +647,7 @@ def test_clsd013_clientside_callback_context_states_list(dash_duo):
         ),
     )
 
-    dash_duo.find_element("input[id*='in1\":2']").send_keys("test 2" + Keys.RETURN)
+    dash_duo.find_element("input[id*='in1\":2']").send_keys(f"test 2{Keys.RETURN}")
 
     dash_duo.wait_for_text_to_equal(
         "#output-clientside",
@@ -713,7 +713,7 @@ def test_clsd015_clientside_chained_callbacks_returning_promise(dash_duo):
 
     @app.callback(Output("div-2", "children"), Input("div-1", "children"))
     def callback(value):
-        return value + "-twice"
+        return f"{value}-twice"
 
     dash_duo.start_server(app)
 
@@ -740,7 +740,7 @@ def test_clsd016_serverside_clientside_shared_input_with_promise(dash_duo):
 
     @app.callback(Output("serverside-div", "children"), Input("input", "children"))
     def callback(value):
-        return "serverside-" + value[0]
+        return f"serverside-{value[0]}"
 
     dash_duo.start_server(app)
 
@@ -772,7 +772,7 @@ def test_clsd017_clientside_serverside_shared_input_with_promise(dash_duo):
     @app.callback(Output("serverside-div", "children"), Input("input", "children"))
     def callback(value):
         with lock:
-            return "serverside-" + value[0] + "-deferred"
+            return f"serverside-{value[0]}-deferred"
 
     dash_duo.start_server(app)
 

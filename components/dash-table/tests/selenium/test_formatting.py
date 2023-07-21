@@ -17,7 +17,7 @@ def get_app(props=dict()):
         if datum["eee"] % 2 == 0:
             datum.pop("eee")
         elif datum["eee"] % 10 == 5:
-            datum["eee"] = "xx-{}-xx".format(datum["eee"])
+            datum["eee"] = f'xx-{datum["eee"]}-xx'
 
     for c in baseProps["columns"]:
         if c["id"] == "rows":
@@ -69,11 +69,11 @@ def test_form001_can_edit_formatted_cells(test):
     assert cell.get_text() == "N/A"
 
     cell.click()
-    test.send_keys("1" + Keys.ENTER)
+    test.send_keys(f"1{Keys.ENTER}")
     assert cell.get_text() == "1"
 
     cell.click()
-    test.send_keys("abc" + Keys.ENTER)
+    test.send_keys(f"abc{Keys.ENTER}")
     assert cell.get_text() == "N/A"
     assert test.get_log_errors() == []
 

@@ -75,15 +75,12 @@ def test_loca002_location_link(dash_dcc):
         return search or ""
 
     @app.callback(
-        Output("test-location", "pathname"),
-        Input("test-button", "n_clicks"),
-        State("test-location", "pathname"),
-    )
+            Output("test-location", "pathname"),
+            Input("test-button", "n_clicks"),
+            State("test-location", "pathname"),
+        )
     def update_pathname(n_clicks, current_pathname):
-        if n_clicks is not None:
-            return "/new/pathname"
-
-        return current_pathname
+        return "/new/pathname" if n_clicks is not None else current_pathname
 
     dash_dcc.start_server(app)
 

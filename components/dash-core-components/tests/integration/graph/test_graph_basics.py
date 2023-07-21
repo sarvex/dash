@@ -270,14 +270,12 @@ def test_grbs006_graph_update_frames(dash_dcc):
     )
 
     @app.callback(
-        Output("relayout-data", "children"),
-        [Input("test-change", "figure")],
-    )
+            Output("relayout-data", "children"),
+            [Input("test-change", "figure")],
+        )
     def show_relayout_data(data):
         frames = data.get("frames", [])
-        if frames:
-            return json.dumps(frames[0]["data"][0]["x"])
-        return ""
+        return json.dumps(frames[0]["data"][0]["x"]) if frames else ""
 
     @app.callback(
         Output("test-change", "figure"),

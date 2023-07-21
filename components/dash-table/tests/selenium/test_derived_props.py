@@ -213,13 +213,15 @@ def test_tdrp003_select_cells(test):
 
     selected = []
     for row in range(3):
-        for col in range(3):
-            selected.append(
-                dict(
-                    row=row, column=col, column_id=rawDf.columns[col], row_id=row + 3000
-                )
+        selected.extend(
+            dict(
+                row=row,
+                column=col,
+                column_id=rawDf.columns[col],
+                row_id=row + 3000,
             )
-
+            for col in range(3)
+        )
     assert test.find_element("#active_cell").get_attribute("innerHTML") == json.dumps(
         active
     )
@@ -273,13 +275,15 @@ def test_tdrp003_select_cells(test):
 
     selected = []
     for row in range(2):
-        for col in range(2):
-            selected.append(
-                dict(
-                    row=row, column=col, column_id=rawDf.columns[col], row_id=row + 3000
-                )
+        selected.extend(
+            dict(
+                row=row,
+                column=col,
+                column_id=rawDf.columns[col],
+                row_id=row + 3000,
             )
-
+            for col in range(2)
+        )
     assert test.find_element("#active_cell").get_attribute("innerHTML") == json.dumps(
         active
     )
@@ -340,15 +344,17 @@ def test_tdrp004_navigate_selected_cells(test):
 
     selected = []
     for row in range(3):
-        for col in range(3):
-            selected.append(
-                dict(
-                    row=row, column=col, column_id=rawDf.columns[col], row_id=row + 3000
-                )
+        selected.extend(
+            dict(
+                row=row,
+                column=col,
+                column_id=rawDf.columns[col],
+                row_id=row + 3000,
             )
-
-    for row in range(3):
-        for col in range(3):
+            for col in range(3)
+        )
+    for _ in range(3):
+        for _ in range(3):
             # active = dict(
             #     row=row, column=col, column_id=rawDf.columns[col], row_id=row + 3000
             # )

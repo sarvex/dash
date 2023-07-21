@@ -75,7 +75,7 @@ def test_cbva002_callback_return_validation():
 
     @app.callback(Output("b", "children"), [Input("a", "children")])
     def single(a):
-        return set([1])
+        return {1}
 
     single_wrapped = app.callback_map["b.children"]["callback"]
 
@@ -86,10 +86,10 @@ def test_cbva002_callback_return_validation():
         pytest.fail("not serializable")
 
     @app.callback(
-        [Output("c", "children"), Output("d", "children")], [Input("a", "children")]
-    )
+            [Output("c", "children"), Output("d", "children")], [Input("a", "children")]
+        )
     def multi(a):
-        return [1, set([2])]
+        return [1, {2}]
 
     multi_wrapped = app.callback_map["..c.children...d.children.."]["callback"]
 
@@ -126,11 +126,11 @@ def test_cbva003_list_single_output(dash_duo):
 
     @app.callback(Output("out1", "children"), Input("in", "children"))
     def o1(i):
-        return "1: " + i
+        return f"1: {i}"
 
     @app.callback([Output("out2", "children")], [Input("in", "children")])
     def o2(i):
-        return ("2: " + i,)
+        return (f"2: {i}", )
 
     dash_duo.start_server(app)
     dash_duo.wait_for_text_to_equal("#out1", "1: Hi")
@@ -168,7 +168,7 @@ def test_cbva004_named_args(named_out, named_in, named_state, dash_duo):
 
     @app.callback(*args, **kwargs)
     def o1(i, s):
-        return "1: " + i + s
+        return f"1: {i}{s}"
 
     args, kwargs = make_args(
         [Output("out2", "children")],
@@ -178,7 +178,7 @@ def test_cbva004_named_args(named_out, named_in, named_state, dash_duo):
 
     @app.callback(*args, **kwargs)
     def o2(i, s):
-        return ("2: " + i + s,)
+        return (f"2: {i}{s}", )
 
     dash_duo.start_server(app)
     dash_duo.wait_for_text_to_equal("#out1", "1: High")
@@ -197,18 +197,18 @@ def test_cbva005_tuple_args(dash_duo):
     )
 
     @app.callback(
-        Output("out1", "children"), (Input("in1", "children"), Input("in2", "children"))
-    )
+            Output("out1", "children"), (Input("in1", "children"), Input("in2", "children"))
+        )
     def f(i1, i2):
-        return "1: " + i1 + i2
+        return f"1: {i1}{i2}"
 
     @app.callback(
-        (Output("out2", "children"),),
-        Input("in1", "children"),
-        (State("in2", "children"),),
-    )
+            (Output("out2", "children"),),
+            Input("in1", "children"),
+            (State("in2", "children"),),
+        )
     def g(i1, i2):
-        return ("2: " + i1 + i2,)
+        return (f"2: {i1}{i2}", )
 
     dash_duo.start_server(app)
     dash_duo.wait_for_text_to_equal("#out1", "1: Yolo")

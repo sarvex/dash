@@ -102,7 +102,7 @@ def generate_class_string(
         args = "{k: _locals[k] for k in _explicit_args}"
         argtext = "**args"
 
-    if len(required_args) == 0:
+    if not required_args:
         required_validation = ""
     else:
         required_validation = f"""
@@ -245,8 +245,7 @@ def generate_class(
     scope = {"Component": Component, "_explicitize_args": _explicitize_args}
     # pylint: disable=exec-used
     exec(string, scope)
-    result = scope[typename]
-    return result
+    return scope[typename]
 
 
 def required_props(props):
@@ -336,11 +335,11 @@ def parse_wildcards(props):
     list
         List of Dash valid wildcard prefixes
     """
-    list_of_valid_wildcard_attr_prefixes = []
-    for wildcard_attr in ["data-*", "aria-*"]:
-        if wildcard_attr in props:
-            list_of_valid_wildcard_attr_prefixes.append(wildcard_attr[:-1])
-    return list_of_valid_wildcard_attr_prefixes
+    return [
+        wildcard_attr[:-1]
+        for wildcard_attr in ["data-*", "aria-*"]
+        if wildcard_attr in props
+    ]
 
 
 def reorder_props(props):
@@ -495,7 +494,7 @@ def create_prop_docstring(
     # formats description
     period = "." if description else ""
     description = description.strip().strip(".").replace('"', r"\"") + period
-    desc_indent = indent_spacing + "    "
+    desc_indent = f"{indent_spacing}    "
     description = fill(
         description,
         initial_indent=desc_indent,
@@ -564,7 +563,7 @@ def map_js_to_py_types_prop_types(type_object, indent_num):
         inner = js_to_py_type(type_object["value"])
         if inner:
             return "list of " + (
-                inner + "s"
+                f"{inner}s"
                 if inner.split(" ")[0] != "dict"
                 else inner.replace("dict", "dicts", 1)
             )

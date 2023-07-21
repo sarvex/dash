@@ -11,11 +11,11 @@ def collect_array(a_value, base, nodes):
     if is_node(a_type):
         nodes.append(base)
     elif a_type in ("shape", "exact"):
-        nodes = collect_nodes(a_value["value"], base + "[]", nodes)
+        nodes = collect_nodes(a_value["value"], f"{base}[]", nodes)
     elif a_type == "union":
-        nodes = collect_union(a_value["value"], base + "[]", nodes)
+        nodes = collect_union(a_value["value"], f"{base}[]", nodes)
     elif a_type == "objectOf":
-        nodes = collect_object(a_value["value"], base + "[]", nodes)
+        nodes = collect_object(a_value["value"], f"{base}[]", nodes)
     return nodes
 
 
@@ -54,10 +54,7 @@ def collect_nodes(metadata, base="", nodes=None):
         t_value = value.get("type", value)
         p_type = t_value.get("name")
 
-        if base:
-            key = f"{base}.{prop_name}"
-        else:
-            key = prop_name
+        key = f"{base}.{prop_name}" if base else prop_name
         if is_node(p_type):
             nodes.append(key)
         elif p_type == "arrayOf":
@@ -75,4 +72,4 @@ def collect_nodes(metadata, base="", nodes=None):
 
 
 def filter_base_nodes(nodes):
-    return [n for n in nodes if not any(e in n for e in ("[]", ".", "{}"))]
+    return [n for n in nodes if all(e not in n for e in ("[]", ".", "{}"))]

@@ -55,11 +55,9 @@ def callback(n_clicks):
 )
 def long_multi(n_clicks):
     time.sleep(1)
-    return (
-        [f"Updated: {n_clicks}"]
-        + [i for i in range(1, n_clicks + 1)]
-        + [no_update for _ in range(n_clicks + 1, 4)]
-    )
+    return ([f"Updated: {n_clicks}"] + list(range(1, n_clicks + 1))) + [
+        no_update for _ in range(n_clicks + 1, 4)
+    ]
 
 
 if __name__ == "__main__":

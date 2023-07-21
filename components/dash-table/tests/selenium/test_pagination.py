@@ -26,7 +26,7 @@ def get_app(mode, data=df, page_count=None):
     app.layout = DataTable(
         id="table",
         columns=[{"name": i, "id": i} for i in rawDf.columns],
-        data=data if mode == "native" else data[0:PAGE_SIZE],
+        data=data if mode == "native" else data[:PAGE_SIZE],
         editable=True,
         fixed_columns={"headers": True},
         fixed_rows={"headers": True},
@@ -178,7 +178,7 @@ def test_tpag007_ops_input_invalid_with_unfocus(test, value, expected_value):
 
 @pytest.mark.parametrize("mode", ["custom", "native"])
 def test_tpag008_hide_with_single_page(test, mode):
-    test.start_server(get_app(mode=mode, data=df[0:PAGE_SIZE]))
+    test.start_server(get_app(mode=mode, data=df[:PAGE_SIZE]))
 
     target = test.table("table")
 

@@ -61,7 +61,7 @@ def test_pare002_relative_path_with_url_base_pathname(
     dash_thread_server(
         get_app(Dash(__name__, use_pages=True, url_base_pathname="/app1/"))
     )
-    dash_br.server_url = "http://localhost:{}/app1/".format(dash_thread_server.port)
+    dash_br.server_url = f"http://localhost:{dash_thread_server.port}/app1/"
 
     for page in dash.page_registry.values():
         dash_br.find_element("#" + page["id"]).click()

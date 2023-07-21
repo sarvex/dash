@@ -17,14 +17,12 @@ import pytest
 
 def scroll_table_by(test, value):
     test.driver.execute_script(
-        "document.querySelector('#table .dt-table-container__row-1').scrollBy(0, {});".format(
-            value
-        )
+        f"document.querySelector('#table .dt-table-container__row-1').scrollBy(0, {value});"
     )
 
 
 def scroll_window_by(test, value):
-    test.driver.execute_script("window.scrollBy(0, {});".format(value))
+    test.driver.execute_script(f"window.scrollBy(0, {value});")
 
 
 def get_app(props, data_fn=generate_mock_data):
@@ -131,13 +129,13 @@ def test_scrv004_virtualization_can_edit(test, props):
     target = test.table("table")
     target.cell(1, 1).click()
 
-    test.send_keys("abc" + Keys.ENTER)
+    test.send_keys(f"abc{Keys.ENTER}")
     wait.until(lambda: target.cell(1, 1).get_text() == "abc", 3)
 
     scroll_table_by(test, 2500)
     target.cell(80, 1).click()
 
-    test.send_keys("def" + Keys.ENTER)
+    test.send_keys(f"def{Keys.ENTER}")
     wait.until(lambda: target.cell(80, 1).get_text() == "def", 3)
 
     assert test.get_log_errors() == []

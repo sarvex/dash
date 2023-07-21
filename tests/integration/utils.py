@@ -45,9 +45,7 @@ def wait_for(condition_function, get_message=lambda: "", *args, **kwargs):
             return condition_function(*args, **kwargs)
         if args:
             return condition_function(*args)
-        if kwargs:
-            return condition_function(**kwargs)
-        return condition_function()
+        return condition_function(**kwargs) if kwargs else condition_function()
 
     if "timeout" in kwargs:
         timeout = kwargs["timeout"]

@@ -109,22 +109,18 @@ def test_grva002_graphs_with_different_figures(dash_dcc, is_eager):
     )
 
     @app.callback(
-        Output("restyle-data", "children"),
-        [Input("example-graph", "restyleData")],
-    )
+            Output("restyle-data", "children"),
+            [Input("example-graph", "restyleData")],
+        )
     def show_restyle_data(data):
-        if data is None:  # ignore initial
-            return ""
-        return json.dumps(data)
+        return "" if data is None else json.dumps(data)
 
     @app.callback(
-        Output("relayout-data", "children"),
-        [Input("example-graph", "relayoutData")],
-    )
+            Output("relayout-data", "children"),
+            [Input("example-graph", "relayoutData")],
+        )
     def show_relayout_data(data):
-        if data is None or "autosize" in data:  # ignore initial & auto width
-            return ""
-        return json.dumps(data)
+        return "" if data is None or "autosize" in data else json.dumps(data)
 
     dash_dcc.start_server(app)
 
@@ -167,14 +163,12 @@ def test_grva003_empty_graph(dash_dcc, is_eager):
     )
 
     @app.callback(
-        Output("graph", "figure"),
-        [Input("click", "n_clicks")],
-        [State("graph", "figure")],
-    )
+            Output("graph", "figure"),
+            [Input("click", "n_clicks")],
+            [State("graph", "figure")],
+        )
     def render_content(click, prev_graph):
-        if click:
-            return {}
-        return prev_graph
+        return {} if click else prev_graph
 
     dash_dcc.start_server(app)
 

@@ -25,10 +25,7 @@ class Patch:
         else:
             # pylint: disable=consider-using-ternary
             self._location = (parent and parent._location) or []
-        if parent is not None:
-            self._operations = parent._operations
-        else:
-            self._operations = []
+        self._operations = parent._operations if parent is not None else []
 
     def __getstate__(self):
         return vars(self)
@@ -46,9 +43,7 @@ class Patch:
             raise AttributeError
         if item == "_location":
             return self._location
-        if item == "_operations":
-            return self._operations
-        return self.__getitem__(item)
+        return self._operations if item == "_operations" else self.__getitem__(item)
 
     def __setattr__(self, key, value):
         if key in ("_location", "_operations"):

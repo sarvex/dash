@@ -1,5 +1,6 @@
 """Vanilla HTML components for Dash"""
 
+
 from ._imports_ import *  # noqa: E402, F401, F403
 from ._imports_ import __all__  # noqa: E402
 
@@ -33,19 +34,13 @@ _this_module = "dash_html_components"
 
 _js_dist = [
     {
-        "relative_package_path": "html/{}.min.js".format(_this_module),
-        "external_url": (
-            "https://unpkg.com/dash-html-components@{}"
-            "/dash_html_components/dash_html_components.min.js"
-        ).format(__version__),
+        "relative_package_path": f"html/{_this_module}.min.js",
+        "external_url": f"https://unpkg.com/dash-html-components@{__version__}/dash_html_components/dash_html_components.min.js",
         "namespace": "dash",
     },
     {
-        "relative_package_path": "html/{}.min.js.map".format(_this_module),
-        "external_url": (
-            "https://unpkg.com/dash-html-components@{}"
-            "/dash_html_components/dash_html_components.min.js.map"
-        ).format(__version__),
+        "relative_package_path": f"html/{_this_module}.min.js.map",
+        "external_url": f"https://unpkg.com/dash-html-components@{__version__}/dash_html_components/dash_html_components.min.js.map",
         "namespace": "dash",
         "dynamic": True,
     },

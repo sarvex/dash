@@ -612,9 +612,7 @@ class Dash:
         self._add_url("", self.index)
 
         if jupyter_dash.active:
-            self._add_url(
-                "_alive_" + jupyter_dash.alive_token, jupyter_dash.serve_alive
-            )
+            self._add_url(f"_alive_{jupyter_dash.alive_token}", jupyter_dash.serve_alive)
 
         # catch-all for front-end routes, used by dcc.Location
         self._add_url("<path:path>", self.index)
@@ -747,7 +745,7 @@ class Dash:
         # for cache busting
         def _relative_url_path(relative_package_path="", namespace=""):
             if any(
-                relative_package_path.startswith(x + "/")
+                relative_package_path.startswith(f"{x}/")
                 for x in ["dcc", "html", "dash_table"]
             ):
                 relative_package_path = relative_package_path.replace("dash.", "")
@@ -1363,11 +1361,7 @@ class Dash:
             else:
                 s = current.replace(walk_dir, "").lstrip("\\").lstrip("/")
                 splitted = slash_splitter.split(s)
-                if len(splitted) > 1:
-                    base = "/".join(slash_splitter.split(s))
-                else:
-                    base = splitted[0]
-
+                base = "/".join(slash_splitter.split(s)) if len(splitted) > 1 else splitted[0]
             if ignore_filter:
                 files_gen = (x for x in files if not ignore_filter.search(x))
             else:

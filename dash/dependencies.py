@@ -244,12 +244,7 @@ def extract_grouped_input_state_callback_args_from_args(args):
         else:
             break
 
-    if len(parameters) == 1:
-        # Only one output grouping, return as-is
-        return parameters[0]
-
-    # Multiple output groupings, return wrap in tuple
-    return parameters
+    return parameters[0] if len(parameters) == 1 else parameters
 
 
 def extract_grouped_input_state_callback_args(args, kwargs):

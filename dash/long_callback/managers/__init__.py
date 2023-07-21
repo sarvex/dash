@@ -96,7 +96,7 @@ class BaseLongCallbackManager(ABC):
 
     @staticmethod
     def _make_progress_key(key):
-        return key + "-progress"
+        return f"{key}-progress"
 
     @staticmethod
     def hash_function(fn, callback_id=""):

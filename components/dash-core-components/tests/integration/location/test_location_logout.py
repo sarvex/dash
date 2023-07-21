@@ -24,14 +24,12 @@ def test_llgo001_location_logout(dash_dcc):
 
         if "logged-out" in location_path:
             return "Logged out"
-        else:
+        @flask.after_this_request
+        def _insert_cookie(rep):
+            rep.set_cookie("logout-cookie", "logged-in")
+            return rep
 
-            @flask.after_this_request
-            def _insert_cookie(rep):
-                rep.set_cookie("logout-cookie", "logged-in")
-                return rep
-
-            return dcc.LogoutButton(id="logout-btn", logout_url="/_logout")
+        return dcc.LogoutButton(id="logout-btn", logout_url="/_logout")
 
     dash_dcc.start_server(app)
     time.sleep(1)

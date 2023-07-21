@@ -46,7 +46,7 @@ def test_msai001_auto_id_assert(dash_dcc):
         _id = dep.id
         if _id[0] in "0123456789":
             _id = "\\3" + _id[0] + " " + _id[1:]
-        return "#" + _id
+        return f"#{_id}"
 
     dash_dcc.wait_for_element(".rc-slider")
     dash_dcc.find_element(escape_id(input1))
