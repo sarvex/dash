@@ -187,7 +187,7 @@ def test_szng001_widths_on_style_change(test):
     ]
 
     fixes = [
-        dict(),
+        {},
         dict(fixed_columns=dict(headers=True)),
         dict(fixed_rows=dict(headers=True)),
         dict(fixed_columns=dict(headers=True), fixed_rows=dict(headers=True)),
@@ -248,8 +248,8 @@ def test_szng001_widths_on_style_change(test):
     test.start_server(app)
 
     for style in styles:
-        display = style.get("style_table", dict()).get("display")
-        width = style.get("style_table", dict()).get("width")
+        display = style.get("style_table", {}).get("display")
+        width = style.get("style_table", {}).get("width")
         target_selector = "#table{}".format(width)
         target = test.find_element(target_selector) if display != "none" else None
 
@@ -290,7 +290,7 @@ def test_szng002_percentages_result_in_same_widths(test):
                         "fixed_columns": fixed_columns,
                         "fixed_rows": fixed_rows,
                         "merge_duplicate_headers": merge_duplicate_headers,
-                        "id": "table{}".format(i),
+                        "id": f"table{i}",
                     }
                 )
                 i = i + 1
@@ -305,7 +305,7 @@ def test_szng002_percentages_result_in_same_widths(test):
     cells_are_same_width(test, "#table0", "#table0")
 
     for i in range(1, len(variations)):
-        cells_are_same_width(test, "#table0", "#table{}".format(i))
+        cells_are_same_width(test, "#table0", f"#table{i}")
 
     assert test.get_log_errors() == []
 

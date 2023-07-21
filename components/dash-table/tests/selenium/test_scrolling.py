@@ -36,9 +36,7 @@ def get_scroll(test):
 
 def scroll_by(test, value):
     test.driver.execute_script(
-        "document.querySelector('#table .dt-table-container__row-1').scrollBy({}, 0);".format(
-            value
-        )
+        f"document.querySelector('#table .dt-table-container__row-1').scrollBy({value}, 0);"
     )
 
 
@@ -46,17 +44,8 @@ def scroll_by(test, value):
     "fixed_rows",
     [dict(fixed_rows=dict(headers=True)), dict(fixed_rows=dict(headers=True, data=1))],
 )
-@pytest.mark.parametrize(
-    "fixed_columns",
-    [
-        dict(),
-        dict(fixed_columns=dict(headers=True)),
-        dict(fixed_columns=dict(headers=True, data=1)),
-    ],
-)
-@pytest.mark.parametrize(
-    "ops", [dict(), dict(row_selectable="single", row_deletable=True)]
-)
+@pytest.mark.parametrize("fixed_columns", [{}, dict(fixed_columns=dict(headers=True)), dict(fixed_columns=dict(headers=True, data=1))])
+@pytest.mark.parametrize("ops", [{}, dict(row_selectable="single", row_deletable=True)])
 def test_scrol001_fixed_alignment(test, fixed_rows, fixed_columns, ops):
     props = {**base_props, **fixed_rows, **fixed_columns, **ops}
 
@@ -88,17 +77,8 @@ def test_scrol001_fixed_alignment(test, fixed_rows, fixed_columns, ops):
     "fixed_rows",
     [dict(fixed_rows=dict(headers=True)), dict(fixed_rows=dict(headers=True, data=1))],
 )
-@pytest.mark.parametrize(
-    "fixed_columns",
-    [
-        dict(),
-        dict(fixed_columns=dict(headers=True)),
-        dict(fixed_columns=dict(headers=True, data=1)),
-    ],
-)
-@pytest.mark.parametrize(
-    "ops", [dict(), dict(row_selectable="single", row_deletable=True)]
-)
+@pytest.mark.parametrize("fixed_columns", [{}, dict(fixed_columns=dict(headers=True)), dict(fixed_columns=dict(headers=True, data=1))])
+@pytest.mark.parametrize("ops", [{}, dict(row_selectable="single", row_deletable=True)])
 def test_scrol002_edit_navigate(test, fixed_rows, fixed_columns, ops):
     props = {**base_props, **fixed_rows, **fixed_columns, **ops}
 

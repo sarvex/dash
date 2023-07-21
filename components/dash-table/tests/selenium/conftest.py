@@ -72,18 +72,14 @@ class DataTableCellFacade(object):
         return (
             len(
                 self.mixin.find_elements(
-                    '#{} {} tbody td.dash-cell.column-{}[data-dash-row="{}"]:not(.phantom-cell)'.format(
-                        self.id, self.state, self.col, self.row
-                    )
+                    f'#{self.id} {self.state} tbody td.dash-cell.column-{self.col}[data-dash-row="{self.row}"]:not(.phantom-cell)'
                 )
             )
             == 1
             if isinstance(self.col, int)
             else len(
                 self.mixin.find_elements(
-                    '#{} {} tbody td.dash-cell[data-dash-column="{}"][data-dash-row="{}"]:not(.phantom-cell)'.format(
-                        self.id, self.state, self.col, self.row
-                    )
+                    f'#{self.id} {self.state} tbody td.dash-cell[data-dash-column="{self.col}"][data-dash-row="{self.row}"]:not(.phantom-cell)'
                 )
             )
             == 1
@@ -94,15 +90,11 @@ class DataTableCellFacade(object):
 
         return (
             self.mixin.find_element(
-                '#{} {} tbody td.dash-cell.column-{}[data-dash-row="{}"]:not(.phantom-cell)'.format(
-                    self.id, self.state, self.col, self.row
-                )
+                f'#{self.id} {self.state} tbody td.dash-cell.column-{self.col}[data-dash-row="{self.row}"]:not(.phantom-cell)'
             )
             if isinstance(self.col, int)
             else self.mixin.find_element(
-                '#{} {} tbody td.dash-cell[data-dash-column="{}"][data-dash-row="{}"]:not(.phantom-cell)'.format(
-                    self.id, self.state, self.col, self.row
-                )
+                f'#{self.id} {self.state} tbody td.dash-cell[data-dash-column="{self.col}"][data-dash-row="{self.row}"]:not(.phantom-cell)'
             )
         )
 
@@ -177,15 +169,11 @@ class DataTableColumnFacade(object):
 
         return (
             self.mixin.find_element(
-                "#{} {} tbody tr:nth-of-type({}) th.dash-header.column-{}:not(.phantom-cell)".format(
-                    self.id, self.state, row + 1, self.col
-                )
+                f"#{self.id} {self.state} tbody tr:nth-of-type({row + 1}) th.dash-header.column-{self.col}:not(.phantom-cell)"
             )
             if isinstance(self.col, int)
             else self.mixin.find_element(
-                '#{} {} tbody tr:nth-of-type({}) th.dash-header[data-dash-column="{}"]:not(.phantom-cell)'.format(
-                    self.id, self.state, row + 1, self.col
-                )
+                f'#{self.id} {self.state} tbody tr:nth-of-type({row + 1}) th.dash-header[data-dash-column="{self.col}"]:not(.phantom-cell)'
             )
         )
 
@@ -200,15 +188,11 @@ class DataTableColumnFacade(object):
 
         els = (
             self.mixin.find_elements(
-                "#{} {} tbody tr:nth-of-type({}) th.dash-header.column-{}:not(.phantom-cell)".format(
-                    self.id, self.state, row + 1, self.col
-                )
+                f"#{self.id} {self.state} tbody tr:nth-of-type({row + 1}) th.dash-header.column-{self.col}:not(.phantom-cell)"
             )
             if isinstance(self.col, int)
             else self.mixin.find_elements(
-                '#{} {} tbody tr:nth-of-type({}) th.dash-header[data-dash-column="{}"]:not(.phantom-cell)'.format(
-                    self.id, self.state, row + 1, self.col
-                )
+                f'#{self.id} {self.state} tbody tr:nth-of-type({row + 1}) th.dash-header[data-dash-column="{self.col}"]:not(.phantom-cell)'
             )
         )
 
@@ -257,15 +241,11 @@ class DataTableColumnFacade(object):
     def filter(self):
         return (
             self.mixin.find_element(
-                "#{} {} tbody tr th.dash-filter.column-{}:not(.phantom-cell)".format(
-                    self.id, self.state, self.col
-                )
+                f"#{self.id} {self.state} tbody tr th.dash-filter.column-{self.col}:not(.phantom-cell)"
             )
             if isinstance(self.col, int)
             else self.mixin.find_element(
-                '#{} {} tbody tr th.dash-filter[data-dash-column="{}"]:not(.phantom-cell)'.format(
-                    self.id, self.state, self.col
-                )
+                f'#{self.id} {self.state} tbody tr th.dash-filter[data-dash-column="{self.col}"]:not(.phantom-cell)'
             )
         )
 
@@ -315,24 +295,18 @@ class DataTableRowFacade(object):
 
     def delete(self):
         return self.mixin.find_elements(
-            "#{} {} tbody tr td.dash-delete-cell:not(.phantom-cell)".format(
-                self.id, self.state
-            )
+            f"#{self.id} {self.state} tbody tr td.dash-delete-cell:not(.phantom-cell)"
         )[self.row].click()
 
     def select(self):
         return self.mixin.find_elements(
-            "#{} {} tbody tr td.dash-select-cell:not(.phantom-cell)".format(
-                self.id, self.state
-            )
+            f"#{self.id} {self.state} tbody tr td.dash-select-cell:not(.phantom-cell)"
         )[self.row].click()
 
     def is_selected(self):
         return (
             self.mixin.find_elements(
-                "#{} {} tbody tr td.dash-select-cell:not(.phantom-cell)".format(
-                    self.id, self.state
-                )
+                f"#{self.id} {self.state} tbody tr td.dash-select-cell:not(.phantom-cell)"
             )[self.row]
             .find_element(By.CSS_SELECTOR, "input")
             .is_selected()
@@ -349,12 +323,12 @@ class DataTablePagingActionFacade(object):
     def click(self):
         self.mixin._wait_for_table(self.id)
 
-        return self.mixin.find_element("#{} {}".format(self.id, self.selector)).click()
+        return self.mixin.find_element(f"#{self.id} {self.selector}").click()
 
     def exists(self):
         self.mixin._wait_for_table(self.id)
 
-        el = self.mixin.find_element("#{} {}".format(self.id, self.selector))
+        el = self.mixin.find_element(f"#{self.id} {self.selector}")
 
         return el is not None and el.is_enabled()
 
@@ -368,13 +342,13 @@ class DataTablePagingCurrentFacade(object):
     def click(self):
         self.mixin._wait_for_table(self.id)
 
-        return self.mixin.find_element("#{} input.current-page".format(self.id)).click()
+        return self.mixin.find_element(f"#{self.id} input.current-page").click()
 
     def get_value(self):
         self.mixin._wait_for_table(self.id)
 
         return self.mixin.find_element(
-            "#{} input.current-page".format(self.id)
+            f"#{self.id} input.current-page"
         ).get_attribute("placeholder")
 
 
@@ -442,11 +416,11 @@ class DataTableToggleColumnsFacade(object):
 
     def open(self):
         if not self.is_opened():
-            self.mixin.find_element("#{} .show-hide".format(self.id)).click()
+            self.mixin.find_element(f"#{self.id} .show-hide").click()
 
     def close(self):
         if self.is_opened():
-            self.mixin.find_element("#{} .show-hide".format(self.id)).click()
+            self.mixin.find_element(f"#{self.id} .show-hide").click()
 
     def get_hidden(self):
         els = self.mixin.find_elements("#table .show-hide-menu input")
@@ -465,7 +439,7 @@ class DataTableToggleColumnsFacade(object):
         return [el.get_attribute("value") for el in self.get_visible()]
 
     def is_opened(self):
-        return len(self.mixin.find_elements("#{} .show-hide-menu".format(self.id))) != 0
+        return len(self.mixin.find_elements(f"#{self.id} .show-hide-menu")) != 0
 
 
 class DataTableFacade(object):
@@ -504,9 +478,7 @@ class DataTableMixin(object):
     @preconditions(_validate_id, _validate_state)
     def _wait_for_table(self, id, state=_ANY):
         return WebDriverWait(self.driver, _TIMEOUT).until(
-            EC.presence_of_element_located(
-                (By.CSS_SELECTOR, "#{} {}".format(id, state))
-            )
+            EC.presence_of_element_located((By.CSS_SELECTOR, f"#{id} {state}"))
         )
 
     @preconditions(_validate_id)

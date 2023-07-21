@@ -35,31 +35,21 @@ _this_module = _sys.modules[__name__]
 
 async_resources = ["export", "table", "highlight"]
 
-_js_dist = []
+_js_dist = [
+    {
+        "relative_package_path": f"dash_table/async-{async_resource}.js",
+        "external_url": f"https://unpkg.com/dash-table@{__version__}/dash_table/async-{async_resource}.js",
+        "namespace": "dash",
+        "async": True,
+    }
+    for async_resource in async_resources
+]
 
 _js_dist.extend(
     [
         {
-            "relative_package_path": "dash_table/async-{}.js".format(async_resource),
-            "external_url": (
-                "https://unpkg.com/dash-table@{}" "/dash_table/async-{}.js"
-            ).format(__version__, async_resource),
-            "namespace": "dash",
-            "async": True,
-        }
-        for async_resource in async_resources
-    ]
-)
-
-_js_dist.extend(
-    [
-        {
-            "relative_package_path": "dash_table/async-{}.js.map".format(
-                async_resource
-            ),
-            "external_url": (
-                "https://unpkg.com/dash-table@{}" "/dash_table/async-{}.js.map"
-            ).format(__version__, async_resource),
+            "relative_package_path": f"dash_table/async-{async_resource}.js.map",
+            "external_url": f"https://unpkg.com/dash-table@{__version__}/dash_table/async-{async_resource}.js.map",
             "namespace": "dash",
             "dynamic": True,
         }
@@ -71,16 +61,12 @@ _js_dist.extend(
     [
         {
             "relative_package_path": "dash_table/bundle.js",
-            "external_url": (
-                "https://unpkg.com/dash-table@{}/dash_table/bundle.js"
-            ).format(__version__),
+            "external_url": f"https://unpkg.com/dash-table@{__version__}/dash_table/bundle.js",
             "namespace": "dash",
         },
         {
             "relative_package_path": "dash_table/bundle.js.map",
-            "external_url": (
-                "https://unpkg.com/dash-table@{}/dash_table/bundle.js.map"
-            ).format(__version__),
+            "external_url": f"https://unpkg.com/dash-table@{__version__}/dash_table/bundle.js.map",
             "namespace": "dash",
             "dynamic": True,
         },

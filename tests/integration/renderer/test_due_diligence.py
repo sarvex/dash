@@ -76,7 +76,7 @@ def test_rddd001_initial_state(dash_duo):
         json.dumps(app.layout, cls=plotly.utils.PlotlyJSONEncoder)
     ), "the state layout is identical to app.layout"
 
-    r = requests.get("{}/_dash-dependencies".format(dash_duo.server_url))
+    r = requests.get(f"{dash_duo.server_url}/_dash-dependencies")
     assert r.status_code == 200
     assert r.json() == [], "no dependencies present in app as no callbacks are defined"
 

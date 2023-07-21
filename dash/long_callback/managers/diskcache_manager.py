@@ -44,14 +44,14 @@ DiskcacheLongCallbackManager requires extra dependencies which can be installed 
 
         if cache is None:
             self.handle = diskcache.Cache()
-        else:
-            if not isinstance(cache, (diskcache.Cache, diskcache.FanoutCache)):
-                raise ValueError(
-                    "First argument must be a diskcache.Cache "
-                    "or diskcache.FanoutCache object"
-                )
+        elif isinstance(cache, (diskcache.Cache, diskcache.FanoutCache)):
             self.handle = cache
 
+        else:
+            raise ValueError(
+                "First argument must be a diskcache.Cache "
+                "or diskcache.FanoutCache object"
+            )
         self.expire = expire
         super().__init__(cache_by)
 
@@ -145,9 +145,8 @@ DiskcacheLongCallbackManager requires extra dependencies which can be installed 
         # Clear result if not caching
         if self.cache_by is None:
             self.clear_cache_entry(key)
-        else:
-            if self.expire:
-                self.handle.touch(key, expire=self.expire)
+        elif self.expire:
+            self.handle.touch(key, expire=self.expire)
 
         self.clear_cache_entry(self._make_progress_key(key))
 

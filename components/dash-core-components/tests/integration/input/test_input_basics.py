@@ -22,15 +22,21 @@ def test_inbs001_all_types(dash_dcc):
 
     app = Dash(__name__)
     app.layout = html.Div(
-        [
-            dcc.Input(id=input_id(_), type=_, placeholder=f"input type {_}")
-            for _ in ALLOWED_TYPES
-        ]
-        + [html.Div(id="output")]
-        + [
-            dcc.Input(id=input_id(_) + "2", type=_, placeholder=f"input type {_}")
-            for _ in ALLOWED_TYPES
-        ]
+        (
+            [
+                dcc.Input(
+                    id=input_id(_), type=_, placeholder=f"input type {_}"
+                )
+                for _ in ALLOWED_TYPES
+            ]
+            + [html.Div(id="output")]
+            + [
+                dcc.Input(
+                    id=f"{input_id(_)}2", type=_, placeholder=f"input type {_}"
+                )
+                for _ in ALLOWED_TYPES
+            ]
+        )
     )
 
     @app.callback(

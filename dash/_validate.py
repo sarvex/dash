@@ -104,8 +104,7 @@ def validate_id_string(arg):
     arg_id = arg.component_id
 
     invalid_chars = ".{"
-    invalid_found = [x for x in invalid_chars if x in arg_id]
-    if invalid_found:
+    if invalid_found := [x for x in invalid_chars if x in arg_id]:
         raise exceptions.InvalidComponentIdError(
             f"""
             The element `{arg_id}` contains `{"`, `".join(invalid_found)}` in its ID.
@@ -129,8 +128,8 @@ def validate_output_spec(output, output_spec, Output):
         speci_list = speci if isinstance(speci, (list, tuple)) else [speci]
         for specij in speci_list:
             if (
-                not Output(specij["id"], clean_property_name(specij["property"]))
-                == outi
+                Output(specij["id"], clean_property_name(specij["property"]))
+                != outi
             ):
                 raise exceptions.CallbackException(
                     "Output does not match callback definition"
@@ -381,8 +380,9 @@ def validate_js_path(registered_paths, package_name, path_in_package_dist):
 
 
 def validate_index(name, checks, index):
-    missing = [i for check, i in checks if not re.compile(check).search(index)]
-    if missing:
+    if missing := [
+        i for check, i in checks if not re.compile(check).search(index)
+    ]:
         plural = "s" if len(missing) > 1 else ""
         raise exceptions.InvalidIndexException(
             f"Missing item{plural} {', '.join(missing)} in {name}."
@@ -511,13 +511,13 @@ def validate_long_callbacks(callback_map):
 
         long_inputs = coerce_to_list(callback["raw_inputs"])
         outputs = set([x[0] for x in running] + progress)
-        circular = [
+        if circular := [
             x
-            for x in set(k for k, v in input_indexed.items() if v.intersection(outputs))
+            for x in {
+                k for k, v in input_indexed.items() if v.intersection(outputs)
+            }
             if x in long_inputs
-        ]
-
-        if circular:
+        ]:
             raise exceptions.LongCallbackError(
                 f"Long callback circular error!\n{circular} is used as input for a long callback"
                 f" but also used as output from an input that is updated with progress or running argument."

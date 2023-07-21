@@ -279,10 +279,7 @@ class Browser(DashPageMixin):
 
             return _wait.until(method)
         except Exception as err:
-            if callable(msg):
-                message = msg(self.driver)
-            else:
-                message = msg
+            message = msg(self.driver) if callable(msg) else msg
             raise TimeoutException(message) from err
 
     def wait_for_element(self, selector, timeout=None):
@@ -422,8 +419,9 @@ class Browser(DashPageMixin):
         menu = dropdown.find_element(By.CSS_SELECTOR, "div.Select-menu-outer")
         logger.debug("the available options are %s", "|".join(menu.text.split("\n")))
 
-        options = menu.find_elements(By.CSS_SELECTOR, "div.VirtualizedSelectOption")
-        if options:
+        if options := menu.find_elements(
+            By.CSS_SELECTOR, "div.VirtualizedSelectOption"
+        ):
             if isinstance(index, int):
                 options[index].click()
                 return
@@ -615,8 +613,7 @@ class Browser(DashPageMixin):
     def reset_log_timestamp(self):
         """reset_log_timestamp only work with chrome webdriver."""
         if self.driver.name.lower() == "chrome":
-            entries = self.driver.get_log("browser")
-            if entries:
+            if entries := self.driver.get_log("browser"):
                 self._last_ts = entries[-1]["timestamp"]
 
     @property

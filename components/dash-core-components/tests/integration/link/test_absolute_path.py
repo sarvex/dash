@@ -65,7 +65,7 @@ def test_lipa002_path(dash_dcc):
         """
     )
 
-    assert location == dash_dcc.server.url + "/extra/eseehc"
+    assert location == f"{dash_dcc.server.url}/extra/eseehc"
     assert text == "cheese"
 
     assert dash_dcc.get_logs() == []

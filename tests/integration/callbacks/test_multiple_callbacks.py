@@ -593,7 +593,7 @@ def test_cbmt013_chained_callback_should_be_blocked(dash_duo):
         [
             dcc.RadioItems(
                 id="countries-radio",
-                options=[{"label": k, "value": k} for k in all_options.keys()],
+                options=[{"label": k, "value": k} for k in all_options],
                 value="America",
             ),
             html.Hr(),

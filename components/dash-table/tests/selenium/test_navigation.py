@@ -51,7 +51,7 @@ def get_markdown_table():
 
     data = [
         {
-            "markdown-headers": "{} row {}".format("#" * (i % 6), i),
+            "markdown-headers": f'{"#" * (i % 6)} row {i}',
             "markdown-italics": ("*{}*" if i % 2 == 0 else "_{}_").format(i),
             "markdown-links": "[Learn about {0}](http://en.wikipedia.org/wiki/{0})".format(
                 i
@@ -68,16 +68,14 @@ def get_markdown_table():
 {} | {}""".format(
                 i, i + 1
             ),
-            "markdown-quotes": "> A quote for row number {}".format(i),
-            "markdown-inline-code": "This is row `{}` in this table.".format(i),
+            "markdown-quotes": f"> A quote for row number {i}",
+            "markdown-inline-code": f"This is row `{i}` in this table.",
             "markdown-code-blocks": """```python
 def hello_table(i={}):
     print("hello, " + i)""".format(
                 i
             ),
-            "markdown-images": "![image {} alt text](https://dash.plotly.com/assets/images/logo-plotly.png)".format(
-                i
-            ),
+            "markdown-images": f"![image {i} alt text](https://dash.plotly.com/assets/images/logo-plotly.png)",
         }
         for i in range(0, DATA_SIZE)
     ]

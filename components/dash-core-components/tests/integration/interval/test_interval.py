@@ -41,17 +41,14 @@ def test_intv002_restart(dash_dcc):
     )
 
     @app.callback(
-        Output("interval", "max_intervals"),
-        [
-            Input("start", "n_clicks_timestamp"),
-            Input("stop", "n_clicks_timestamp"),
-        ],
-    )
+            Output("interval", "max_intervals"),
+            [
+                Input("start", "n_clicks_timestamp"),
+                Input("stop", "n_clicks_timestamp"),
+            ],
+        )
     def start_stop(start, stop):
-        if start < stop:
-            return 0
-        else:
-            return -1
+        return 0 if start < stop else -1
 
     @app.callback(Output("output", "children"), [Input("interval", "n_intervals")])
     def display_data(n_intervals):

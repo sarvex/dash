@@ -42,22 +42,16 @@ def _infer_image(module):
     for fn in files_in_assets:
         fn_without_extension, _, extension = fn.partition(".")
         if extension.lower() in valid_extensions:
-            if (
-                fn_without_extension == page_id
-                or fn_without_extension == page_id.replace("_", "-")
-            ):
+            if fn_without_extension in [page_id, page_id.replace("_", "-")]:
                 return fn
 
             if fn_without_extension == "app":
                 app_file = fn
 
-            if fn_without_extension == "logo":
+            elif fn_without_extension == "logo":
                 logo_file = fn
 
-    if app_file:
-        return app_file
-
-    return logo_file
+    return app_file if app_file else logo_file
 
 
 def _module_name_to_page_name(module_name):
@@ -80,7 +74,7 @@ def _infer_path(module_name, template):
         # replace the variables in the template with "none" to create a default path if
         # no path is supplied
         path = re.sub("<.*?>", "none", template)
-    path = "/" + path if not path.startswith("/") else path
+    path = f"/{path}" if not path.startswith("/") else path
     return path
 
 

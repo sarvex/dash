@@ -57,8 +57,6 @@ def generate_components(
 
     extract_path = pkg_resources.resource_filename("dash", "extract-meta.js")
 
-    reserved_patterns = "|".join(f"^{p}$" for p in reserved_words)
-
     os.environ["NODE_PATH"] = "node_modules"
 
     shutil.copyfile(
@@ -70,6 +68,8 @@ def generate_components(
 
         # Ensure local node modules is used when the script is packaged.
         env["MODULES_PATH"] = os.path.abspath("./node_modules")
+
+        reserved_patterns = "|".join(f"^{p}$" for p in reserved_words)
 
         cmd = shlex.split(
             f'node {extract_path} "{ignore}" "{reserved_patterns}" {components_source}',

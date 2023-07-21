@@ -71,7 +71,7 @@ class contains_text:
     def message(self, driver):
         try:
             element = self._get_element(driver)
-            text = "found: " + str(element.text) or str(element.get_attribute("value"))
+            text = f"found: {str(element.text)}" or str(element.get_attribute("value"))
         except WebDriverException:
             text = f"{self.selector} not found"
         return f"text -> {self.text} not found inside element within {self.timeout}s, {text}"
@@ -117,7 +117,7 @@ class text_to_equal:
     def message(self, driver):
         try:
             element = self._get_element(driver)
-            text = "found: " + str(element.text) or str(element.get_attribute("value"))
+            text = f"found: {str(element.text)}" or str(element.get_attribute("value"))
         except WebDriverException:
             text = f"{self.selector} not found"
         return f"text -> {self.text} not found within {self.timeout}s, {text}"

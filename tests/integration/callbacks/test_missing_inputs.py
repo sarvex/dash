@@ -43,19 +43,19 @@ def test_cbmi001_all_missing_inputs(dash_duo):
         return a + b
 
     @app.callback(
-        Output("out2", "children"),
-        [Input("out1", "children")],
-        [State("title", "children")],
-    )
+            Output("out2", "children"),
+            [Input("out1", "children")],
+            [State("title", "children")],
+        )
     def out2(out1, title):
-        return out1 + " - 2 - " + title
+        return f"{out1} - 2 - {title}"
 
     @app.callback(
-        Output("out3", "children"),
-        [Input("out1", "children"), Input("title", "children")],
-    )
+            Output("out3", "children"),
+            [Input("out1", "children"), Input("title", "children")],
+        )
     def out3(out1, title):
-        return out1 + " - 3 - " + title
+        return f"{out1} - 3 - {title}"
 
     dash_duo.start_server(app)
     wait_for_queue(dash_duo)
@@ -114,7 +114,7 @@ def test_cbmi002_follow_on_to_two_skipped_callbacks(dash_duo):
     wait_for_queue(dash_duo)
 
     for i in ["1", "2", "3"]:
-        assert dash_duo.find_element("#out" + i).text == "output{} init".format(i)
+        assert dash_duo.find_element(f"#out{i}").text == "output{} init".format(i)
 
     dash_duo.find_element("#btn").click()
     # now all callbacks fire
@@ -150,7 +150,7 @@ def test_cbmi003_some_missing_inputs(dash_duo):
 
     @app.callback(Output("out2", "children"), [Input("out1", "children")])
     def out2(out1):
-        return out1 + " - 2"
+        return f"{out1} - 2"
 
     dash_duo.start_server(app)
     wait_for_queue(dash_duo)
@@ -228,7 +228,7 @@ def test_cbmi005_all_multi_wildcards_with_output(dash_duo):
 
     @app.callback(Output("out2", "children"), [Input("out1", "children")])
     def out2(out1):
-        return out1 + " - 2"
+        return f"{out1} - 2"
 
     dash_duo.start_server(app)
     wait_for_queue(dash_duo)
@@ -273,7 +273,7 @@ def test_cbmi006_all_multi_wildcards_no_outputs(dash_duo):
 
     @app.callback(Output("out2", "children"), [Input("out1", "children")])
     def out2(out1):
-        return out1 + " - 2"
+        return f"{out1} - 2"
 
     dash_duo.start_server(app)
     wait_for_queue(dash_duo)
@@ -313,16 +313,16 @@ def test_cbmi007_all_multi_wildcards_some_outputs(dash_duo):
         return (out + [html.Div("output1 init", id="out1")]) if out else "content init"
 
     @app.callback(
-        [Output("out1", "children"), Output("out3", "children")],
-        [Input({"i": ALL}, "children")],
-    )
+            [Output("out1", "children"), Output("out3", "children")],
+            [Input({"i": ALL}, "children")],
+        )
     def out1(items):
         out = ", ".join(items) or "no items"
-        return out, (out + " - 3")
+        return out, f"{out} - 3"
 
     @app.callback(Output("out2", "children"), [Input("out1", "children")])
     def out2(out1):
-        return out1 + " - 2"
+        return f"{out1} - 2"
 
     dash_duo.start_server(app)
     wait_for_queue(dash_duo)
@@ -365,15 +365,15 @@ def test_cbmi008_multi_wildcards_and_simple_all_missing(dash_duo):
         return (out + [html.Div("A", id="a")]) if out else "content init"
 
     @app.callback(
-        Output("out1", "children"),
-        [Input({"i": ALL}, "children"), Input("a", "children")],
-    )
+            Output("out1", "children"),
+            [Input({"i": ALL}, "children"), Input("a", "children")],
+        )
     def out1(items, a):
-        return a + " - " + (", ".join(items) or "no items")
+        return f"{a} - " + (", ".join(items) or "no items")
 
     @app.callback(Output("out2", "children"), [Input("out1", "children")])
     def out2(out1):
-        return out1 + " - 2"
+        return f"{out1} - 2"
 
     dash_duo.start_server(app)
     wait_for_queue(dash_duo)
@@ -439,22 +439,22 @@ def test_cbmi009_match_wildcards_all_missing(dash_duo):
         return a + b
 
     @app.callback(
-        Output({"i": MATCH, "id": "out2"}, "children"),
-        [Input({"i": MATCH, "id": "out1"}, "children")],
-        [State({"i": MATCH, "id": "title"}, "children")],
-    )
+            Output({"i": MATCH, "id": "out2"}, "children"),
+            [Input({"i": MATCH, "id": "out1"}, "children")],
+            [State({"i": MATCH, "id": "title"}, "children")],
+        )
     def out2(out1, title):
-        return out1 + " - 2 - " + title
+        return f"{out1} - 2 - {title}"
 
     @app.callback(
-        Output({"i": MATCH, "id": "out3"}, "children"),
-        [
-            Input({"i": MATCH, "id": "out1"}, "children"),
-            Input({"i": MATCH, "id": "title"}, "children"),
-        ],
-    )
+            Output({"i": MATCH, "id": "out3"}, "children"),
+            [
+                Input({"i": MATCH, "id": "out1"}, "children"),
+                Input({"i": MATCH, "id": "title"}, "children"),
+            ],
+        )
     def out3(out1, title):
-        return out1 + " - 3 - " + title
+        return f"{out1} - 3 - {title}"
 
     dash_duo.start_server(app)
     wait_for_queue(dash_duo)

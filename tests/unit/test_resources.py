@@ -99,9 +99,7 @@ def test_internal(mocker):
 
     assert (
         "fake_dcc.min.js.map" in app.registered_paths["dash"]
-    ), "Dynamic resource not available in registered path {}".format(
-        app.registered_paths["dash"]
-    )
+    ), f'Dynamic resource not available in registered path {app.registered_paths["dash"]}'
 
 
 def test_collect_and_register_resources(mocker):

@@ -17,7 +17,7 @@ def get_app(editable):
 
     if editable:
         for c in baseProps["columns"]:
-            c["editable"] = not c["id"] in ["bbb", "eee", "fff"]
+            c["editable"] = c["id"] not in ["bbb", "eee", "fff"]
 
     app.layout = DataTable(**baseProps)
 
@@ -39,7 +39,7 @@ def test_kron001_navigate_into(test, editable, name, start_id, end_id):
 
     target.cell(2, start_id).click()
 
-    for i in range(2):
+    for _ in range(2):
         test.send_keys(Keys.ARROW_RIGHT)
         assert target.cell(2, end_id).is_focused()
 

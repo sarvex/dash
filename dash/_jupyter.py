@@ -40,24 +40,17 @@ JupyterDisplayMode = Literal["inline", "external", "jupyterlab", "tab", "_none"]
 
 def _get_skip(error: Exception):
     tb = traceback.format_exception(type(error), error, error.__traceback__)
-    skip = 0
-    for i, line in enumerate(tb):
-        if "%% callback invoked %%" in line:
-            skip = i + 1
-            break
-    return skip
+    return next(
+        (
+            i + 1
+            for i, line in enumerate(tb)
+            if "%% callback invoked %%" in line
+        ),
+        0,
+    )
 
 
-def _custom_formatargvalues(
-    args,
-    varargs,
-    varkw,
-    locals,  # pylint: disable=W0622
-    formatarg=str,
-    formatvarargs=lambda name: "*" + name,
-    formatvarkw=lambda name: "**" + name,
-    formatvalue=lambda value: "=" + repr(value),
-):
+def _custom_formatargvalues(args, varargs, varkw, locals, formatarg=str, formatvarargs=lambda name: f"*{name}", formatvarkw=lambda name: f"**{name}", formatvalue=lambda value: f"={repr(value)}"):
 
     """Copied from inspect.formatargvalues, modified to place function
     arguments on separate lines"""
@@ -305,7 +298,7 @@ class JupyterDash:
                 domain_base = os.environ.get("DASH_DOMAIN_BASE", None)
                 if domain_base:
                     # Dash Enterprise sets DASH_DOMAIN_BASE environment variable
-                    server_url = "https://" + domain_base
+                    server_url = f"https://{domain_base}"
                 else:
                     server_url = f"http://{host}:{port}"
         else:

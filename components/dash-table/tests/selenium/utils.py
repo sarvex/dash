@@ -145,7 +145,9 @@ def generate_mock_data(rows=100):
                 editable=False,
                 presentation="dropdown",
             ),
-            dict(id="aaa", name=["", "Weather", "Temperature"], type="numeric"),
+            dict(
+                id="aaa", name=["", "Weather", "Temperature"], type="numeric"
+            ),
             dict(
                 id="aaa-readonly",
                 name=["", "Weather", "Temperature-RO"],
@@ -162,7 +164,9 @@ def generate_mock_data(rows=100):
                 "fff": i + 1,
                 "ggg": i * 10,
                 "bbb": ["Humid", "Wet", "Snowy", "Tropical Beaches"][i % 4],
-                "bbb-readonly": ["Humid", "Wet", "Snowy", "Tropical Beaches"][i % 4],
+                "bbb-readonly": ["Humid", "Wet", "Snowy", "Tropical Beaches"][
+                    i % 4
+                ],
                 "aaa": i + 1,
                 "aaa-readonly": i + 1,
             }
@@ -172,14 +176,14 @@ def generate_mock_data(rows=100):
             "bbb": dict(
                 clearable=True,
                 options=[
-                    dict(label="label {}".format(i), value=i)
+                    dict(label=f"label {i}", value=i)
                     for i in ["Humid", "Wet", "Snowy", "Tropical Beaches"]
                 ],
             ),
             "bbb-readonly": dict(
                 clearable=True,
                 options=[
-                    dict(label="label {}".format(i), value=i)
+                    dict(label=f"label {i}", value=i)
                     for i in ["Humid", "Wet", "Snowy", "Tropical Beaches"]
                 ],
             ),
@@ -266,6 +270,6 @@ def get_props(rows=100, data_fn=generate_mock_data):
         style_cell=dict(maxWidth=150, minWidth=150, width=150),
     )
 
-    baseProps.update(mockProps)
+    baseProps |= mockProps
 
     return baseProps

@@ -32,7 +32,7 @@ def get_app(props=dict()):
         sort_action="native",
     )
 
-    baseProps.update(props)
+    baseProps |= props
 
     app.layout = DataTable(**baseProps)
 

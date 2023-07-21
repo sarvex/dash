@@ -43,7 +43,7 @@ def format_tag(
     elif opened:
         tag += ">"
     else:
-        tag += ">" + inner + f"</{tag_name}>"
+        tag += f">{inner}" + f"</{tag_name}>"
     return tag
 
 
@@ -121,8 +121,7 @@ class AttributeDict(dict):
     # pylint: disable=inconsistent-return-statements
     def first(self, *names):
         for name in names:
-            value = self.get(name)
-            if value:
+            if value := self.get(name):
                 return value
         if not names:
             return next(iter(self), {})
@@ -255,14 +254,11 @@ class OrderedSet(collections.abc.MutableSet):
         return len(self._data)
 
     def __iter__(self):
-        for i in self._data:
-            yield i
+        yield from self._data
 
 
 def coerce_to_list(obj):
-    if not isinstance(obj, (list, tuple)):
-        return [obj]
-    return obj
+    return [obj] if not isinstance(obj, (list, tuple)) else obj
 
 
 def clean_property_name(name: str):

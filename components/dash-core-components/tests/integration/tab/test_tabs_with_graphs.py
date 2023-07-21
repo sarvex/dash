@@ -149,9 +149,7 @@ def test_tagr002_tabs_render_without_selected(dash_dcc, is_eager):
             if n_clicks is None:
                 raise PreventUpdate
 
-            if n_clicks % 2 == 1:
-                return {"display": "block"}
-            return {"display": "none"}
+            return {"display": "block"} if n_clicks % 2 == 1 else {"display": "none"}
 
         @app.callback(Output(f"graph-{i}", "figure"), [Input(i, "n_clicks")])
         def on_click_update_graph(n_clicks):

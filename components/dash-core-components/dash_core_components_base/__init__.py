@@ -53,31 +53,21 @@ async_resources = [
     "upload",
 ]
 
-_js_dist = []
+_js_dist = [
+    {
+        "relative_package_path": f"dcc/async-{async_resource}.js",
+        "external_url": f"https://unpkg.com/dash-core-components@{__version__}/dash_core_components/async-{async_resource}.js",
+        "namespace": "dash",
+        "async": True,
+    }
+    for async_resource in async_resources
+]
 
 _js_dist.extend(
     [
         {
-            "relative_package_path": "dcc/async-{}.js".format(async_resource),
-            "external_url": (
-                "https://unpkg.com/dash-core-components@{}"
-                "/dash_core_components/async-{}.js"
-            ).format(__version__, async_resource),
-            "namespace": "dash",
-            "async": True,
-        }
-        for async_resource in async_resources
-    ]
-)
-
-_js_dist.extend(
-    [
-        {
-            "relative_package_path": "dcc/async-{}.js.map".format(async_resource),
-            "external_url": (
-                "https://unpkg.com/dash-core-components@{}"
-                "/dash_core_components/async-{}.js.map"
-            ).format(__version__, async_resource),
+            "relative_package_path": f"dcc/async-{async_resource}.js.map",
+            "external_url": f"https://unpkg.com/dash-core-components@{__version__}/dash_core_components/async-{async_resource}.js.map",
             "namespace": "dash",
             "dynamic": True,
         }
@@ -88,63 +78,42 @@ _js_dist.extend(
 _js_dist.extend(
     [
         {
-            "relative_package_path": "dcc/{}.js".format(_this_module),
-            "external_url": (
-                "https://unpkg.com/dash-core-components@{}"
-                "/dash_core_components/dash_core_components.js"
-            ).format(__version__),
+            "relative_package_path": f"dcc/{_this_module}.js",
+            "external_url": f"https://unpkg.com/dash-core-components@{__version__}/dash_core_components/dash_core_components.js",
             "namespace": "dash",
         },
         {
-            "relative_package_path": "dcc/{}.js.map".format(_this_module),
-            "external_url": (
-                "https://unpkg.com/dash-core-components@{}"
-                "/dash_core_components/dash_core_components.js.map"
-            ).format(__version__),
+            "relative_package_path": f"dcc/{_this_module}.js.map",
+            "external_url": f"https://unpkg.com/dash-core-components@{__version__}/dash_core_components/dash_core_components.js.map",
             "namespace": "dash",
             "dynamic": True,
         },
         {
-            "relative_package_path": "dcc/{}-shared.js".format(_this_module),
-            "external_url": (
-                "https://unpkg.com/dash-core-components@{}"
-                "/dash_core_components/dash_core_components-shared.js"
-            ).format(__version__),
+            "relative_package_path": f"dcc/{_this_module}-shared.js",
+            "external_url": f"https://unpkg.com/dash-core-components@{__version__}/dash_core_components/dash_core_components-shared.js",
             "namespace": "dash",
         },
         {
-            "relative_package_path": "dcc/{}-shared.js.map".format(_this_module),
-            "external_url": (
-                "https://unpkg.com/dash-core-components@{}"
-                "/dash_core_components/dash_core_components-shared.js.map"
-            ).format(__version__),
+            "relative_package_path": f"dcc/{_this_module}-shared.js.map",
+            "external_url": f"https://unpkg.com/dash-core-components@{__version__}/dash_core_components/dash_core_components-shared.js.map",
             "namespace": "dash",
             "dynamic": True,
         },
         {
             "relative_package_path": "dcc/plotly.min.js",
-            "external_url": (
-                "https://unpkg.com/dash-core-components@{}"
-                "/dash_core_components/plotly.min.js"
-            ).format(__version__),
+            "external_url": f"https://unpkg.com/dash-core-components@{__version__}/dash_core_components/plotly.min.js",
             "namespace": "dash",
             "async": "eager",
         },
         {
             "relative_package_path": "dcc/async-plotlyjs.js",
-            "external_url": (
-                "https://unpkg.com/dash-core-components@{}"
-                "/dash_core_components/async-plotlyjs.js"
-            ).format(__version__),
+            "external_url": f"https://unpkg.com/dash-core-components@{__version__}/dash_core_components/async-plotlyjs.js",
             "namespace": "dash",
             "async": "lazy",
         },
         {
             "relative_package_path": "dcc/async-plotlyjs.js.map",
-            "external_url": (
-                "https://unpkg.com/dash-core-components@{}"
-                "/dash_core_components/async-plotlyjs.js.map"
-            ).format(__version__),
+            "external_url": f"https://unpkg.com/dash-core-components@{__version__}/dash_core_components/async-plotlyjs.js.map",
             "namespace": "dash",
             "dynamic": True,
         },

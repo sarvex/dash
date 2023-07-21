@@ -16,8 +16,8 @@ def test_cbcx001_modified_response(dash_duo):
 
     @app.callback(Output("output", "children"), [Input("input", "value")])
     def update_output(value):
-        callback_context.response.set_cookie("dash_cookie", value + " - cookie")
-        return value + " - output"
+        callback_context.response.set_cookie("dash_cookie", f"{value} - cookie")
+        return f"{value} - output"
 
     dash_duo.start_server(app)
     dash_duo.wait_for_text_to_equal("#output", "ab - output")
@@ -55,7 +55,7 @@ def test_cbcx002_triggered(dash_duo):
 
     for i in range(1, 5):
         for btn in btns:
-            dash_duo.find_element("#" + btn).click()
+            dash_duo.find_element(f"#{btn}").click()
             dash_duo.wait_for_text_to_equal(
                 "#output", "Just clicked {} for the {} time!".format(btn, i)
             )
@@ -99,10 +99,14 @@ def test_cbcx004_triggered_backward_compat(dash_duo):
 
 @pytest.mark.DASH1350
 def test_cbcx005_grouped_clicks(dash_duo):
+
+
+
     class context:
         calls = 0
         callback_contexts = []
-        clicks = dict()
+        clicks = {}
+
 
     app = Dash(__name__)
     app.layout = html.Div(
@@ -354,7 +358,7 @@ def test_cbcx007_triggered_id(dash_duo):
 
     for i in range(1, 5):
         for btn in btns:
-            dash_duo.find_element("#" + btn).click()
+            dash_duo.find_element(f"#{btn}").click()
             dash_duo.wait_for_text_to_equal("#output", f"Just clicked {btn}")
 
 

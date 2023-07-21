@@ -79,21 +79,18 @@ def test_stda002_nested_data(dash_dcc):
     )
 
     @app.callback(
-        Output("store", "data"),
-        [
-            Input("obj-btn", "n_clicks_timestamp"),
-            Input("list-btn", "n_clicks_timestamp"),
-        ],
-    )
+            Output("store", "data"),
+            [
+                Input("obj-btn", "n_clicks_timestamp"),
+                Input("list-btn", "n_clicks_timestamp"),
+            ],
+        )
     def on_obj_click(obj_ts, list_ts):
         if obj_ts is None and list_ts is None:
             raise PreventUpdate
 
         # python 3 got the default props bug. plotly/dash#396
-        if (obj_ts and not list_ts) or obj_ts > list_ts:
-            return nested
-        else:
-            return nested_list
+        return nested if (obj_ts and not list_ts) or obj_ts > list_ts else nested_list
 
     @app.callback(
         Output("output", "children"),
@@ -139,14 +136,12 @@ def test_stda003_large_data_size(storage_type, csv_5mb, dash_dcc):
     )
 
     @app.callback(
-        Output("out", "children"),
-        [Input(storage_type, "modified_timestamp")],
-        [State(storage_type, "data")],
-    )
+            Output("out", "children"),
+            [Input(storage_type, "modified_timestamp")],
+            [State(storage_type, "data")],
+        )
     def update_output(mts, data):
-        if data is None:
-            return "nil"
-        return fingerprint(data)
+        return "nil" if data is None else fingerprint(data)
 
     @app.callback(Output(storage_type, "data"), [Input("btn", "n_clicks")])
     def on_click(n_clicks):

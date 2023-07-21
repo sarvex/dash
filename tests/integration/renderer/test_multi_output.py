@@ -105,7 +105,7 @@ def test_rdmo003_single_output_as_multi(dash_duo):
 
     @app.callback([Output("output", "children")], [Input("input", "value")])
     def update_output(value):
-        return ["out" + value]
+        return [f"out{value}"]
 
     dash_duo.start_server(app)
 

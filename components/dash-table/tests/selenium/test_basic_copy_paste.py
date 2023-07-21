@@ -23,7 +23,7 @@ def get_app():
         [
             DataTable(
                 id="table",
-                data=df[0:250],
+                data=df[:250],
                 columns=[
                     {"name": i, "id": i, "hideable": i == "Complaint ID"}
                     for i in rawDf.columns
@@ -34,9 +34,10 @@ def get_app():
             ),
             DataTable(
                 id="table2",
-                data=df[0:10],
+                data=df[:10],
                 columns=[
-                    {"name": i, "id": i, "deletable": True} for i in rawDf.columns
+                    {"name": i, "id": i, "deletable": True}
+                    for i in rawDf.columns
                 ],
                 editable=True,
                 sort_action="native",
@@ -44,9 +45,10 @@ def get_app():
             ),
             DataTable(
                 id="table3",
-                data=df[0:10],
+                data=df[:10],
                 columns=[
-                    {"name": i, "id": i, "deletable": True} for i in rawDf.columns
+                    {"name": i, "id": i, "deletable": True}
+                    for i in rawDf.columns
                 ],
                 cell_selectable=False,
                 sort_action="native",

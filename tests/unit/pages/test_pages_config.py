@@ -83,7 +83,7 @@ def test_pages_folder_app_config(
 ):
     app = Dash(__name__, use_pages=use_pages, pages_folder=pages_folder)
     if use_pages is None:
-        expected_use_pages = bool(pages_folder != "pages")
+        expected_use_pages = pages_folder != "pages"
     elif use_pages in (True, False):
         expected_use_pages = use_pages
     assert app.use_pages == expected_use_pages

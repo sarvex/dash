@@ -25,14 +25,12 @@ def store_app():
     )
 
     @app.callback(
-        Output("output", "children"),
-        [Input("memory", "modified_timestamp")],
-        [State("memory", "data")],
-    )
+            Output("output", "children"),
+            [Input("memory", "modified_timestamp")],
+            [State("memory", "data")],
+        )
     def write_memory(modified_ts, data):
-        if data is None:
-            return ""
-        return json.dumps(data)
+        return "" if data is None else json.dumps(data)
 
     @app.callback(
         [

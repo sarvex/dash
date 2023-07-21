@@ -48,7 +48,7 @@ def test_cbwc001_todo_app(content_callback, dash_duo):
     def assert_item(item, text, done, prefix="", suffix=""):
         dash_duo.wait_for_text_to_equal(css_escape('#{"item":%d}' % item), text)
 
-        expected_note = "" if done else (prefix + " preceding items are done" + suffix)
+        expected_note = "" if done else f"{prefix} preceding items are done{suffix}"
         dash_duo.wait_for_text_to_equal(
             css_escape('#{"item":%d,"preceding":true}' % item), expected_note
         )
@@ -168,21 +168,19 @@ def fibonacci_app(clientside):
     else:
 
         @app.callback(
-            Output({"i": MATCH}, "children"), Input({"i": ALLSMALLER}, "children")
-        )
+                    Output({"i": MATCH}, "children"), Input({"i": ALLSMALLER}, "children")
+                )
         def sequence(prev):
             global fibonacci_count
-            fibonacci_count = fibonacci_count + 1
+            fibonacci_count += 1
             print(fibonacci_count)
 
-            if len(prev) < 2:
-                return len(prev)
-            return int(prev[-1] or 0) + int(prev[-2] or 0)
+            return len(prev) if len(prev) < 2 else int(prev[-1] or 0) + int(prev[-2] or 0)
 
         @app.callback(Output("sum", "children"), Input({"i": ALL}, "children"))
         def show_sum(seq):
             global fibonacci_sum_count
-            fibonacci_sum_count = fibonacci_sum_count + 1
+            fibonacci_sum_count += 1
             print("fibonacci_sum_count: ", fibonacci_sum_count)
 
             return "{} elements, sum: {}".format(

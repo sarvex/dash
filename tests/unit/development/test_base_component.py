@@ -80,7 +80,7 @@ def test_debc005_get_item_with_nested_children_two_branches():
 
 def test_debc006_get_item_with_full_tree():
     c, c1, c2, c3, c4, c5 = nested_tree()
-    keys = [k for k in c]
+    keys = list(c)
 
     assert keys == ["0.0", "0.1", "0.1.x", "0.1.x.x", "0.1.x.x.0"]
 
@@ -107,7 +107,7 @@ def test_debc008_set_item_anywhere_in_tree():
 
     # Test setting items starting from the innermost item
     for key in reversed(keys):
-        new_id = "new {}".format(key)
+        new_id = f"new {key}"
         new_component = Component(id=new_id, children="new string")
         c[key] = new_component
         assert c[new_id] == new_component
@@ -115,7 +115,7 @@ def test_debc008_set_item_anywhere_in_tree():
 
 def test_debc009_del_item_full_tree():
     c = nested_tree()[0]
-    keys = reversed([k for k in c])
+    keys = reversed(list(c))
     for key in keys:
         c[key]
         del c[key]
@@ -125,7 +125,7 @@ def test_debc009_del_item_full_tree():
 
 def test_debc010_traverse_full_tree():
     c, c1, c2, c3, c4, c5 = nested_tree()
-    elements = [i for i in c._traverse()]
+    elements = list(c._traverse())
     assert elements == c.children + [c3] + [c2] + c2.children
 
 
@@ -133,7 +133,7 @@ def test_debc011_traverse_with_tuples():
     c, c1, c2, c3, c4, c5 = nested_tree()
     c2.children = tuple(c2.children)
     c.children = tuple(c.children)
-    elements = [i for i in c._traverse()]
+    elements = list(c._traverse())
     assert elements == list(c.children) + [c3] + [c2] + list(c2.children)
 
 
@@ -404,28 +404,28 @@ def test_debc025_iter():
     ]
 
     for m in mixins:
-        assert not hasattr(c, m), "should not have method " + m
+        assert not hasattr(c, m), f"should not have method {m}"
 
     keys = ["2", "3", "4", "5", "6", "7", "8"]
 
     for k in keys:
         # test __contains__()
-        assert k in c, "should find key " + k
+        assert k in c, f"should find key {k}"
         # test __getitem__()
-        assert c[k].id == k, "key {} points to the right item".format(k)
+        assert c[k].id == k, f"key {k} points to the right item"
 
     # test __iter__()
     keys2 = []
     for k in c:
         keys2.append(k)
-        assert k in keys, "iteration produces key " + k
+        assert k in keys, f"iteration produces key {k}"
 
     assert len(keys) == len(keys2), "iteration produces no extra keys"
 
 
 def test_debc026_component_not_children():
     children = [Component(id="a"), html.Div(id="b"), "c", 1]
-    for i in range(len(children)):
+    for _ in range(len(children)):
         # cycle through each component in each position
         children = children[1:] + [children[0]]
 
@@ -460,19 +460,21 @@ def test_debc027_component_error_message():
     with pytest.raises(TypeError) as e:
         html.Div(asdf=True)
     assert str(e.value) == (
-        "The `html.Div` component (version {}) ".format(__version__)
-        + "received an unexpected "
-        + "keyword argument: `asdf`\n"
-        + "Allowed arguments: {}".format(", ".join(sorted(html.Div()._prop_names)))
+        (
+            f"The `html.Div` component (version {__version__}) received an unexpected "
+            + "keyword argument: `asdf`\n"
+        )
+        + f'Allowed arguments: {", ".join(sorted(html.Div()._prop_names))}'
     )
 
     with pytest.raises(TypeError) as e:
         html.Div(asdf=True, id="my-component")
     assert str(e.value) == (
-        "The `html.Div` component (version {}) ".format(__version__)
-        + 'with the ID "my-component" received an unexpected '
-        + "keyword argument: `asdf`\n"
-        + "Allowed arguments: {}".format(", ".join(sorted(html.Div()._prop_names)))
+        (
+            f'The `html.Div` component (version {__version__}) with the ID "my-component" received an unexpected '
+            + "keyword argument: `asdf`\n"
+        )
+        + f'Allowed arguments: {", ".join(sorted(html.Div()._prop_names))}'
     )
 
 

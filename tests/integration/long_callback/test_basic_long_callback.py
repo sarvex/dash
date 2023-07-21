@@ -45,8 +45,7 @@ def setup_long_callback_app(manager_name, app_name):
 
         # Clear redis of cached values
         redis_conn = redis.Redis(host="localhost", port=6379, db=1)
-        cache_keys = redis_conn.keys()
-        if cache_keys:
+        if cache_keys := redis_conn.keys():
             redis_conn.delete(*cache_keys)
 
         worker = subprocess.Popen(
@@ -87,8 +86,7 @@ def setup_long_callback_app(manager_name, app_name):
         print(cache_directory)
         os.environ["DISKCACHE_DIR"] = cache_directory
         try:
-            app = import_app(f"tests.integration.long_callback.{app_name}")
-            yield app
+            yield import_app(f"tests.integration.long_callback.{app_name}")
         finally:
             # Interval may run one more time after settling on final app state
             # Sleep for a couple of intervals
@@ -582,7 +580,7 @@ def test_lcbc016_multi_page_cancel(dash_duo, manager):
         time.sleep(2.1)
         dash_duo.wait_for_text_to_equal("#output1", "initial")
 
-        dash_duo.server_url = dash_duo.server_url + "/2"
+        dash_duo.server_url = f"{dash_duo.server_url}/2"
 
         dash_duo.find_element("#start2").click()
         dash_duo.wait_for_text_to_equal("#progress2", "running")

@@ -14,6 +14,4 @@ layout = html.Div(
 
 @callback(Output("url", "pathname"), Input("btn1", "n_clicks"))
 def update(n):
-    if n > 0:
-        return "/page2"
-    return dash.no_update
+    return "/page2" if n > 0 else dash.no_update

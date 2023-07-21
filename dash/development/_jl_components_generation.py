@@ -108,11 +108,11 @@ def jl_package_name(namestring):
 
 
 def stringify_wildcards(wclist, no_symbol=False):
-    if no_symbol:
-        wcstring = "|".join("{}-".format(item) for item in wclist)
-    else:
-        wcstring = ", ".join('Symbol("{}-")'.format(item) for item in wclist)
-    return wcstring
+    return (
+        "|".join(f"{item}-" for item in wclist)
+        if no_symbol
+        else ", ".join(f'Symbol("{item}-")' for item in wclist)
+    )
 
 
 def get_wildcards_jl(props):
@@ -232,10 +232,7 @@ def get_jl_type(type_object):
     """
     js_type_name = type_object["name"]
     js_to_jl_types = get_jl_prop_types(type_object=type_object)
-    if js_type_name in js_to_jl_types:
-        prop_type = js_to_jl_types[js_type_name]()
-        return prop_type
-    return ""
+    return js_to_jl_types[js_type_name]() if js_type_name in js_to_jl_types else ""
 
 
 def print_jl_type(typedata):
@@ -323,12 +320,14 @@ def create_prop_docstring_jl(
                 is_required="required" if required else "optional",
             )
         )
-    return "{indent_spacing}- `{name}` ({type}{is_required}){description}".format(
-        indent_spacing=indent_spacing,
-        name=prop_name,
-        type="{}; ".format(jl_type_name) if jl_type_name else "",
-        description=(": {}".format(description) if description != "" else ""),
-        is_required="required" if required else "optional",
+    return (
+        "{indent_spacing}- `{name}` ({type}{is_required}){description}".format(
+            indent_spacing=indent_spacing,
+            name=prop_name,
+            type=f"{jl_type_name}; " if jl_type_name else "",
+            description=f": {description}" if description != "" else "",
+            is_required="required" if required else "optional",
+        )
     )
 
 
@@ -337,9 +336,7 @@ def create_prop_docstring_jl(
 # lower case names for the resulting functions; if a prefix
 # is supplied, leave it as-is
 def format_fn_name(prefix, name):
-    if prefix:
-        return "{}_{}".format(prefix, name.lower())
-    return name.lower()
+    return f"{prefix}_{name.lower()}" if prefix else name.lower()
 
 
 def generate_metadata_strings(resources, metatype):
@@ -403,10 +400,10 @@ def generate_package_file(project_shortname, components, pkg_data, prefix):
         project_shortname=project_shortname,
         base_package=base_package_name(project_shortname),
     )
-    file_path = os.path.join("src", package_name + ".jl")
+    file_path = os.path.join("src", f"{package_name}.jl")
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(package_string)
-    print("Generated {}".format(file_path))
+    print(f"Generated {file_path}")
 
 
 def generate_toml_file(project_shortname, pkg_data):
@@ -419,9 +416,7 @@ def generate_toml_file(project_shortname, pkg_data):
         hex=u.hex[:-12] + hashlib.md5(package_name.encode("utf-8")).hexdigest()[-12:]
     )
 
-    authors_string = (
-        'authors = ["{}"]\n'.format(package_author) if package_author else ""
-    )
+    authors_string = f'authors = ["{package_author}"]\n' if package_author else ""
 
     base_package = base_package_name(project_shortname)
 
@@ -437,7 +432,7 @@ def generate_toml_file(project_shortname, pkg_data):
     file_path = "Project.toml"
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(toml_string)
-    print("Generated {}".format(file_path))
+    print(f"Generated {file_path}")
 
 
 def generate_class_string(name, props, description, project_shortname, prefix):
@@ -455,8 +450,6 @@ def generate_class_string(name, props, description, project_shortname, prefix):
     )
 
     wclist = get_wildcards_jl(props)
-    default_paramtext = ""
-
     # Filter props to remove those we don't want to expose
     for item in prop_keys[:]:
         if item.endswith("-*") or item == "setProps":
@@ -464,14 +457,10 @@ def generate_class_string(name, props, description, project_shortname, prefix):
         elif item in julia_keywords:
             prop_keys.remove(item)
             warnings.warn(
-                (
-                    'WARNING: prop "{}" in component "{}" is a Julia keyword'
-                    " - REMOVED FROM THE JULIA COMPONENT"
-                ).format(item, name)
+                f'WARNING: prop "{item}" in component "{name}" is a Julia keyword - REMOVED FROM THE JULIA COMPONENT'
             )
 
-    default_paramtext += ", ".join(":{}".format(p) for p in prop_keys)
-
+    default_paramtext = "" + ", ".join(f":{p}" for p in prop_keys)
     has_children = "children" in prop_keys
     funcname = format_fn_name(prefix, name)
     children_signatures = (
@@ -500,7 +489,7 @@ def generate_struct_file(name, props, description, project_shortname, prefix):
         name, props, description, project_shortname, prefix
     )
 
-    file_name = format_fn_name(prefix, name) + ".jl"
+    file_name = f"{format_fn_name(prefix, name)}.jl"
 
     # put component files in src/jl subdir,
     # this also creates the Julia source directory for the package
@@ -513,7 +502,7 @@ def generate_struct_file(name, props, description, project_shortname, prefix):
         f.write(import_string)
         f.write(class_string)
 
-    print("Generated {}".format(file_name))
+    print(f"Generated {file_name}")
 
 
 # pylint: disable=unused-argument

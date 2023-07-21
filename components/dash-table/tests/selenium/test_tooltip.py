@@ -5,28 +5,28 @@ import time
 import dash.testing.wait as wait
 from dash.dash_table import DataTable
 
-columns = [dict(id=str(i), name="Column {}".format(i)) for i in range(1, 30)]
+columns = [dict(id=str(i), name=f"Column {i}") for i in range(1, 30)]
 
 data = []
 for i in range(1, 100):
-    datum = dict()
+    datum = {}
     data.append(datum)
     for j in columns:
-        datum[j["id"]] = "{}-{}".format(i, j["id"])
+        datum[j["id"]] = f'{i}-{j["id"]}'
 
 tooltip_data_text = []
 for i in range(1, 100):
-    datum = dict()
+    datum = {}
     tooltip_data_text.append(datum)
     for j in columns:
-        datum[j["id"]] = dict(type="text", value=";; {}-{}".format(i, j["id"]))
+        datum[j["id"]] = dict(type="text", value=f';; {i}-{j["id"]}')
 
 tooltip_data_markdown = []
 for i in range(1, 100):
-    datum = dict()
+    datum = {}
     tooltip_data_markdown.append(datum)
     for j in columns:
-        datum[j["id"]] = dict(type="markdown", value="### ;; {}-{}".format(i, j["id"]))
+        datum[j["id"]] = dict(type="markdown", value=f'### ;; {i}-{j["id"]}')
 
 base_props = dict(
     id="table", columns=columns, data=data, tooltip_delay=None, tooltip_duration=None
@@ -38,25 +38,9 @@ def assert_aligned(cell, tooltip):
     assert (tooltip.location["x"] + tooltip.size["width"]) >= cell.location["x"]
 
 
-@pytest.mark.parametrize(
-    "fixed_rows",
-    [
-        dict(),
-        dict(fixed_rows=dict(headers=True)),
-        dict(fixed_rows=dict(headers=True, data=1)),
-    ],
-)
-@pytest.mark.parametrize(
-    "fixed_columns",
-    [
-        dict(),
-        dict(fixed_columns=dict(headers=True)),
-        dict(fixed_columns=dict(headers=True, data=1)),
-    ],
-)
-@pytest.mark.parametrize(
-    "ops", [dict(), dict(row_selectable="single", row_deletable=True)]
-)
+@pytest.mark.parametrize("fixed_rows", [{}, dict(fixed_rows=dict(headers=True)), dict(fixed_rows=dict(headers=True, data=1))])
+@pytest.mark.parametrize("fixed_columns", [{}, dict(fixed_columns=dict(headers=True)), dict(fixed_columns=dict(headers=True, data=1))])
+@pytest.mark.parametrize("ops", [{}, dict(row_selectable="single", row_deletable=True)])
 def test_ttip001_displays_aligned_tooltip(test, fixed_rows, fixed_columns, ops):
     props = {
         **base_props,
@@ -183,10 +167,7 @@ def test_ttip004_tooltip_applied(
     props = {
         **base_props,
         "columns": [
-            dict(
-                id=str(i),
-                name=["Column {}".format(math.ceil(i / 3)), "Column {}".format(i)],
-            )
+            dict(id=str(i), name=[f"Column {math.ceil(i / 3)}", f"Column {i}"])
             for i in range(1, 30)
         ],
         "merge_duplicate_headers": True,
