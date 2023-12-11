@@ -19,7 +19,7 @@ preconditions
 pyarrow<3;python_version<"3.7"
 pyarrow;python_version>="3.7"
 pylint==2.10.2
-pytest-mock==3.2.0
+pytest-mock==3.12.0
 pytest-sugar==0.9.4
 xlrd<2
 # Dependencies used for development new Dash components
